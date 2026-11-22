@@ -563,8 +563,11 @@
       if (hit) cells.push([c, r, Math.random(), Math.random(), Math.random(), Math.random()]);
     }
 
-    const tex = new THREE.Texture(img); tex.needsUpdate = true;
-    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    // Logo als 1024x1024-Bild (Zweierpotenz) – funktioniert in jedem Browser, auch in Instagram/TikTok
+    const pot = document.createElement("canvas"); pot.width = pot.height = 1024;
+    pot.getContext("2d").drawImage(img, 0, 0, 1024, 1024);
+    const tex = new THREE.CanvasTexture(pot);
+    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
 
     function makeMesh(layerFrom, layerTo, front){
       const base = new THREE.PlaneGeometry(TW, TH);
@@ -616,7 +619,11 @@
       const mesh = new THREE.Mesh(g, m); mesh.frustumCulled = false; mesh.renderOrder = front ? 2 : 1;
       group.add(mesh); return m;
     }
-    const mats = [makeMesh(1, LAYERS, false), makeMesh(0, 1, true)];
+    const mats = [makeMesh(1, LAYERS, false)];          // goldene Kante (Tiefe)
+    // Vorderseite: dein Original-Logo als einfache Fläche – zeigt sich überall
+    const front = new THREE.Mesh(new THREE.PlaneGeometry(LW, LH),
+      new THREE.MeshBasicMaterial({ map:tex, transparent:true, depthWrite:false, side:THREE.DoubleSide }));
+    front.position.z = 0.002; front.renderOrder = 2; group.add(front);
 
     // Funkel-Sterne auf dem Diamant-Logo
     const SP = [], SPh = [];
@@ -774,7 +781,7 @@
       group.visible = time > 1.25;
       const sc = 0.15 + 0.85 * back(slam);
       group.scale.setScalar(sc);
-      mats.forEach(m => { m.uniforms.uP.value = 1 - burst * burst * 0.12; m.uniforms.uTime.value = time; m.uniforms.uRot.value.set(group.rotation.x, group.rotation.y); });
+      mats.forEach(m => { m.uniforms.uP.value = 1; m.uniforms.uTime.value = time; m.uniforms.uRot.value.set(group.rotation.x, group.rotation.y); });
       sparkMat.uniforms.uTime.value = time;
 
       mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
