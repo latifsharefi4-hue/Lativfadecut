@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lativ Fade Cut – Friseur in Augsburg</title>
+<meta name="description" content="Lativ Fade Cut – Friseurmeister in Augsburg. Fade, Locken, Farbe, Damen- und Herrenhaarschnitte. Georgenstraße 3, 86152 Augsburg. Termin online buchen oder über die Termin-Börse übernehmen.">
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0b; --panel:#141414; --line:#262626;
+    --gold:#ffffff; --gold-2:#ffffff; --text:#ffffff; --muted:#d0d0d0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:Cinzel,serif;font-weight:700;letter-spacing:.04em}
+  h2{font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-2);margin-bottom:8px}
+  .eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:10px}
+  section{padding:72px 0;border-top:1px solid var(--line)}
+
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:3px;font-weight:600;font-size:1rem;letter-spacing:.03em;text-decoration:none;transition:background .15s ease, border-color .15s ease;cursor:pointer;font-family:inherit}
+  .btn-gold{background:#fff;border:1px solid #fff;color:#0b0b0b}
+  .btn-gold:hover{background:#e4e4e4;border-color:#e4e4e4}
+  .btn-ghost{border:1px solid #444;color:#fff;background:transparent}
+  .btn-ghost:hover{border-color:var(--gold)}
+  .btn-sm{padding:10px 16px;font-size:.9rem}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(11,11,11,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .nav img{height:42px;width:auto}
+  .nav nav{display:flex;gap:22px;align-items:center}
+  .nav nav a{text-decoration:none;color:var(--muted);font-size:.92rem}
+  .nav nav a:hover{color:var(--gold-2)}
+  .nav .btn{padding:9px 16px;font-size:.88rem}
+  .nav nav a.btn{color:#0b0b0b}
+  @media(max-width:720px){.nav nav a.link{display:none}}
+
+  /* 3D-Logo-Hero: Logo setzt sich aus Teilen zusammen, dreht mit Maus/Finger/Scroll */
+  .hero{position:relative;height:118vh}
+  .stage{position:sticky;top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;padding:0 22px 44px;background:radial-gradient(ellipse 60% 48% at 50% 34%,rgba(201,154,60,.16),transparent 70%)}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+  .stage img.logo{position:absolute;left:50%;top:30%;transform:translate(-50%,-50%);width:min(380px,78vw);height:auto}
+  .stage.gl img.logo{display:none}
+  .stage.flat img.logo{animation:float3d 6s ease-in-out infinite}
+  @keyframes float3d{0%,100%{transform:translate(-50%,-50%) perspective(800px) rotateY(-14deg)}50%{transform:translate(-50%,-54%) perspective(800px) rotateY(14deg)}}
+  .copy{position:relative;z-index:2}
+  .hero p.lead{font-size:clamp(1.05rem,2.6vw,1.25rem);color:var(--muted);max-width:560px;margin:0 auto 22px}
+  .hero .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .hint{margin-top:18px;font-size:.78rem;letter-spacing:.2em;color:#777;animation:bob 2s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(5px)}}
+  @media(max-width:720px){.stage{padding-bottom:96px}.hint{display:none}}
+  .badge{display:inline-flex;align-items:center;gap:10px;margin-top:30px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid #2e2e2e;font-size:.88rem;color:var(--muted)}
+  .badge img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+  .badge b{letter-spacing:.12em;color:var(--text);font-weight:600}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:30px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:24px}
+  .card h3{font-size:1.1rem;color:var(--gold-2);margin-bottom:6px}
+  .card p{color:var(--muted);font-size:.95rem}
+
+  .prices{margin-top:24px;background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row span{color:var(--muted);font-size:.9rem;display:block}
+  a.row{text-decoration:none;transition:background .15s}
+  a.row:hover{background:#181614}
+  .row strong em{display:block;font-family:Inter,sans-serif;font-style:normal;font-size:.8rem;color:var(--muted);text-align:right;margin-top:4px}
+  .row strong{font-family:Cinzel,serif;font-size:1.5rem;color:var(--gold-2);white-space:nowrap}
+  .note{margin-top:16px;color:var(--muted);font-size:.92rem}
+
+  .book{text-align:center}
+  .book p{color:var(--muted);max-width:520px;margin:0 auto 26px}
+
+  /* Termin-Börse */
+  .tb-intro{color:var(--muted);max-width:620px;margin:6px 0 24px}
+  .tb-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:26px}
+  .tb-step{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:16px 18px;font-size:.92rem;color:var(--muted)}
+  .tb-step b{display:block;color:#fff;font-family:Cinzel,serif;font-size:1.05rem;margin-bottom:4px}
+  .tb-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+  .offer{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+  .offer.taken{opacity:.5}
+  .offer .when{font-family:Cinzel,serif;font-size:1.15rem}
+  .offer .what{color:var(--muted);font-size:.9rem}
+  .offer .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .pill{font-size:.8rem;padding:4px 12px;border-radius:999px;border:1px solid #444;white-space:nowrap}
+  .pill.free{background:#fff;color:#0b0b0b;border-color:#fff}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:22px;margin-top:14px}
+  .field{display:block;margin-top:12px;font-size:.85rem;color:var(--muted)}
+  .field input,.field select{display:block;width:100%;margin-top:6px;background:#0b0b0b;color:#fff;border:1px solid #333;border-radius:3px;padding:11px 12px;font-size:1rem;font-family:inherit}
+  .field input:focus,.field select:focus{outline:none;border-color:#fff}
+  .err{color:#f09595;font-size:.88rem;margin-top:10px;min-height:1em}
+  .ok{color:#fff;font-size:.95rem;margin-top:10px}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .sub{font-size:.78rem;letter-spacing:.2em;color:var(--muted);font-weight:600;margin-top:30px}
+  .hidden{display:none}
+  .admin{margin-top:40px;border-top:1px dashed var(--line);padding-top:24px}
+  .logrow{padding:12px 0;border-bottom:1px dashed var(--line);font-size:.95rem}
+  .logrow small{display:block;color:var(--muted)}
+  .empty{color:var(--muted);font-size:.95rem;padding:18px;border:1px dashed var(--line);border-radius:4px;text-align:center}
+
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+  @media(max-width:720px){.contact{grid-template-columns:1fr}}
+  .contact .photo{border-radius:4px;overflow:hidden;border:1px solid var(--line);min-height:240px;background:url(img/rathaus.jpg) center/cover}
+  .info{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:26px}
+  .info h3{font-size:1rem;color:var(--muted);margin:0 0 6px;letter-spacing:.12em}
+  .info p{margin-bottom:20px}
+  .hours{width:100%;border-collapse:collapse;margin-bottom:20px}
+  .hours td{padding:6px 0;border-bottom:1px dashed var(--line)}
+  .hours td:last-child{text-align:right;color:var(--gold-2)}
+  .hours tr.closed td:last-child{color:var(--muted)}
+
+
+  /* ===== Ganze Seite 3D: fester WebGL-Hintergrund + 3D-Karten ===== */
+  #bg3d{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+  main,footer{position:relative;z-index:1}
+  section{border-top:1px solid rgba(255,255,255,.07)}
+  .card,.prices,.info,.tb-step,.offer,.panel{background:rgba(18,16,13,.9);border-color:rgba(226,184,102,.16)}
+  .card,.prices,.info{position:relative;transform-style:preserve-3d;will-change:transform}
+  .card::after,.prices::after,.info::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(226,184,102,.13),transparent 60%)}
+  .card:hover::after,.prices:hover::after,.info:hover::after{opacity:1}
+  .card h3{transform:translateZ(30px)}
+  .js3d .r3d{opacity:0;transform:perspective(900px) rotateX(16deg) translateY(46px) scale(.97);transition:opacity .9s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+  .js3d .r3d.in{opacity:1;transform:perspective(900px) rotateX(0) translateY(0) scale(1)}
+  .js3d .r3d.in.tilt{transition:transform .15s ease-out}
+
+  /* ===== Gold-Preise + Daten-Pakete zum Logo ===== */
+  #preise h2{background:linear-gradient(100deg,#a87a2a,#f3d27e 40%,#fff3cf 50%,#e2b866 60%,#a87a2a);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 6s linear infinite}
+  .row strong{background:linear-gradient(100deg,#b8862e 0%,#f6d98b 35%,#fff4d0 50%,#e2b866 65%,#a87a2a 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 4s linear infinite;filter:drop-shadow(0 0 10px rgba(226,184,102,.25))}
+  .row strong em{-webkit-text-fill-color:#d9b267;color:#d9b267}
+  @keyframes shine{from{background-position:130% 0}to{background-position:-130% 0}}
+  .prices{border-color:rgba(226,184,102,.28)!important;box-shadow:0 0 0 1px rgba(226,184,102,.05),0 18px 50px -20px rgba(226,184,102,.18)}
+  .row{border-bottom-color:rgba(226,184,102,.12)!important;transition:background .4s,box-shadow .4s}
+  a.row:hover{background:rgba(226,184,102,.07)}
+  .row.send{background:rgba(226,184,102,.08);box-shadow:inset 3px 0 0 #e2b866}
+  #data3d{position:fixed;inset:0;width:100%;height:100%;z-index:25;pointer-events:none}
+  .nav img{transition:transform .25s,filter .25s}
+
+  /* ===== Vor dem Start: Buchung noch zu ===== */
+  .btn.soon{background:transparent!important;border:1px solid rgba(226,184,102,.55)!important;color:#e2b866!important;cursor:default;pointer-events:none;gap:10px}
+  .btn.soon::before{content:"";width:8px;height:8px;border-radius:50%;background:#e2b866;box-shadow:0 0 0 0 rgba(226,184,102,.6);animation:ping 1.8s ease-out infinite}
+  @keyframes ping{70%{box-shadow:0 0 0 9px rgba(226,184,102,0)}100%{box-shadow:0 0 0 0 rgba(226,184,102,0)}}
+  .closed-pill{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:6px 14px;border-radius:999px;border:1px solid rgba(226,184,102,.4);background:rgba(18,16,13,.6);color:#e2b866;font-size:.82rem;letter-spacing:.14em;font-weight:600}
+  .closed .row{pointer-events:none;cursor:default}
+  .float .btn.soon,header .btn.soon{background:rgba(11,11,11,.96)!important}
+  .closed .row strong em{-webkit-text-fill-color:#9a8a6a;color:#9a8a6a}
+
+  /* ===== Gut lesbare Schrift: größer, mehr Kontrast, kein Glanz, kein Blinken ===== */
+  body{font-size:17px;line-height:1.65}
+  .eyebrow{font-size:.86rem;letter-spacing:.14em;color:#d8d8d8}
+  h2{font-size:clamp(1.8rem,4.6vw,2.4rem);line-height:1.2}
+  .hero p.lead{font-size:clamp(1.12rem,2.8vw,1.3rem);color:#ececec}
+  .copy,.hero p.lead{text-shadow:0 1px 10px rgba(0,0,0,.85)}
+  .card p,.note,.tb-intro,.tb-step,.offer .what,.book p{font-size:1rem;color:#d6d6d6}
+  .card h3{font-size:1.2rem}
+  .row{padding:22px 24px}
+  .row div{font-size:1.08rem;font-weight:500}
+  .row span{font-size:.98rem;color:#cfcfcf;margin-top:4px}
+  #preise h2,.row strong{background:none!important;-webkit-text-fill-color:#e8c36f!important;color:#e8c36f!important;animation:none!important;filter:none!important}
+  .row strong{font-size:1.65rem}
+  .row strong em{font-size:.88rem!important;font-weight:600;-webkit-text-fill-color:#e8c36f!important;color:#e8c36f!important}
+  .hours td{padding:9px 0;font-size:1.02rem}
+  .info p{font-size:1.05rem}
+  .card::after,.prices::after,.info::after{display:none}
+  .hint{animation:none}
+  .btn.soon::before{animation:none}
+  .card,.prices,.info,.tb-step,.offer,.panel{background:rgba(16,14,12,.88)}
+  footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
+
+  .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
+  .float .btn{width:100%}
+  @media(max-width:720px){.float{display:block}}
+</style>
+</head>
+<body>
+
+<canvas id="bg3d" aria-hidden="true"></canvas>
+<canvas id="data3d" aria-hidden="true"></canvas>
+<header>
+  <div class="wrap nav">
+    <a href="#top"><img src="img/logo.png" alt="Lativ Fade Cut"></a>
+    <nav>
+      <a class="link" href="#leistungen">Warum Lativ</a>
+      <a class="link" href="#preise">Preise</a>
+      <a class="link" href="#tauschen">Termin-Börse</a>
+      <a class="link" href="#kontakt">Kontakt</a>
+      <a class="btn btn-gold js-book" href="https://cal.eu/lativfadecut">Termin buchen</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="stage" id="stage">
+      <canvas id="logo3d" aria-hidden="true"></canvas>
+      <img class="logo" src="img/logo.png" alt="Lativ Fade Cut Logo">
+      <div class="copy">
+        <p class="lead">Zertifizierter Friseurmeister in Augsburg. Präzisions-Fades, Bart und Premium-Service.</p>
+        <div class="cta">
+          <a class="btn btn-gold js-book" href="https://cal.eu/lativfadecut">Jetzt Termin buchen</a>
+          <a class="btn btn-ghost" href="#tauschen">Termin-Börse</a>
+        </div>
+        <div class="badge"><img src="img/rathaus.jpg" alt=""><b>AUGSBURG</b> Georgenstraße 3</div>
+        <div class="hint">SCROLLEN ↓</div>
+      </div>
+    </div>
+  </div>
+
+  <section id="leistungen">
+    <div class="wrap">
+      <div class="eyebrow">Warum Lativ</div>
+      <h2>Architektur des Schnitts</h2>
+      <p style="color:var(--muted);max-width:620px;margin-top:6px">Struktur und millimetergenaue Fades. Kein Mainstream. Nur Präzision.</p>
+      <div class="grid">
+        <div class="card"><h3>Meisterqualität</h3><p>Zertifizierter Friseurmeister, Handwerkskammer Augsburg.</p></div>
+        <div class="card"><h3>Präzisions-Fade</h3><p>Saubere, klare Übergänge – auf den Millimeter.</p></div>
+        <div class="card"><h3>Premium Service</h3><p>Individuelle Beratung und perfektes Finish.</p></div>
+        <div class="card"><h3>Sauber &amp; sicher</h3><p>Sterilisierte Werkzeuge und hohe Hygienestandards.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preise">
+    <div class="wrap">
+      <div class="eyebrow">Preise &amp; Buchung</div>
+      <h2>Haarschnitte</h2>
+      <div class="prices">
+        <a class="row" href="https://cal.eu/lativfadecut/classic-haarschnitt-30"><div>Haarschnitt + Styling<span>35 Min · Sauberer Schnitt mit klaren Übergängen + Styling, mit Haar- und Kopfhautanalyse</span></div><strong>28 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/scheren-schnitt"><div>Scheren-Schnitt<span>40 Min · Waschen, Schneiden, Styling</span></div><strong>35 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/premium-haarschnitt-40"><div>LativCut Premium · Meister<span>50 Min · Maximale Präzision, Beratung &amp; Styling, perfektes Finish – inkl. kostenlosem Styling-Produkt</span></div><strong>40 €<em>Buchen →</em></strong></a>
+      </div>
+      <h2 style="margin-top:44px">Kinder</h2>
+      <div class="prices">
+        <a class="row" href="https://cal.eu/lativfadecut/kinder-haarschnitt-unter-12-jahre-alt-20"><div>Kinder-Haarschnitt unter 15 Jahre<span>25 Min</span></div><strong>25 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/kinder-haarschnitt-uber-3-mm-bis-12-jahre-alt-16"><div>Kinder-Haarschnitt über 3 mm, bis 12 Jahre<span>20 Min</span></div><strong>20 €<em>Buchen →</em></strong></a>
+      </div>
+      <h2 style="margin-top:44px">Haare &amp; Bart</h2>
+      <div class="prices">
+        <a class="row" href="https://cal.eu/lativfadecut/haarschnitt-bart-35"><div>Haare + Bart<span>45 Min · Konturen, Pflege &amp; sauberes Styling</span></div><strong>48 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/augenbrauen-mit-faden-40"><div>Haare + Bart + Augenbrauen mit Faden<span>45 Min · Upgrade: Augenbrauen formen mit Faden</span></div><strong>55 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/komplettpaket-premium-65"><div>Komplettpaket Premium · Signature<span>65 Min · Haare, Bart, Styling, Kopfmassage, Gesichtsmaske, Waschen, Details</span></div><strong>65 €<em>Buchen →</em></strong></a>
+      </div>
+      <h2 style="margin-top:44px">Farbe &amp; Locken</h2>
+      <div class="prices">
+        <a class="row" href="https://cal.eu/lativfadecut/strahnen-95"><div>Strähnen<span>120 Min · ohne Haarschnitt</span></div><strong>50 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/dauerwelle-haarschnitt"><div>Dauerwelle + Haarschnitt<span>120 Min · inkl. Pflegetipps für schöne Locken</span></div><strong>75 €<em>Buchen →</em></strong></a>
+      </div>
+      <h2 style="margin-top:44px">Damen</h2>
+      <div class="prices">
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Damen-Haarschnitt<span>30 Min · Schnitt nach Wunsch + Styling</span></div><strong>25 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Waschen, Schneiden, Föhnen<span>45 Min · Haarwäsche, Schnitt und Föhnfrisur</span></div><strong>35 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Spitzen schneiden<span>20 Min · Länge bleibt, Spitzen werden aufgefrischt</span></div><strong>15 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Föhnen / Styling<span>30 Min · Föhnfrisur oder Styling ohne Schnitt</span></div><strong>20 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Ansatz färben<span>60 Min · Nachfärben des Ansatzes</span></div><strong>40 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Komplett färben<span>90 Min · Farbe für das ganze Haar</span></div><strong>60 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut/strahnen-95"><div>Strähnen<span>120 Min · ohne Haarschnitt</span></div><strong>50 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Augenbrauen mit Faden<span>15 Min · Augenbrauen formen mit Faden</span></div><strong>10 €<em>Buchen →</em></strong></a>
+      </div>
+      <p class="note">Tipp auf eine Leistung, um direkt einen Termin zu buchen. Bezahlung bar oder mit Karte. Alle Preise inkl. MwSt. Absagen bitte bis 24 Stunden vorher.</p>
+    </div>
+  </section>
+
+  <!-- TERMIN-BÖRSE -->
+  <section id="tauschen">
+    <div class="wrap">
+      <div class="eyebrow">Termin-Börse</div>
+      <h2>Termin abgeben oder übernehmen</h2>
+      <p class="tb-intro">Du kannst deinen Termin nicht wahrnehmen? Tausch ihn einfach mit jemandem, der keinen Termin hat – kostenlos. Alles ausgebucht? Hier findest du Termine, die andere Kunden abgeben.</p>
+
+      <div class="tb-steps">
+        <div class="tb-step"><b>1. Eintragen</b>Datum, Uhrzeit und Leistung deines Termins angeben.</div>
+        <div class="tb-step"><b>2. Jemand übernimmt</b>Ein anderer Kunde tippt auf „Übernehmen“ und meldet sich bei dir.</div>
+        <div class="tb-step"><b>3. Fertig</b>Keiner muss absagen – Lativ weiß Bescheid, wer kommt.</div>
+      </div>
+
+      <div id="tbClosed" class="empty hidden">Die Termin-Börse startet in Kürze.</div>
+
+      <div id="tbOpen">
+        <button class="btn btn-gold" id="btnAbgeben">+ Meinen Termin abgeben</button>
+
+        <div class="panel hidden" id="formAbgeben">
+          <div style="font-family:Cinzel,serif;font-size:1.2rem">Termin abgeben</div>
+          <label class="field">Dein Vorname<input id="aName" maxlength="30" autocomplete="given-name"></label>
+          <label class="field">Datum<input id="aDate" type="date"></label>
+          <label class="field">Uhrzeit<input id="aTime" type="time" step="900"></label>
+          <label class="field">Leistung
+            <select id="aService">
+              <option>Haarschnitt + Styling</option>
+              <option>Scheren-Schnitt</option>
+              <option>LativCut Premium · Meister</option>
+              <option>Kinder-Haarschnitt</option>
+              <option>Haare + Bart</option>
+              <option>Haare + Bart + Augenbrauen</option>
+              <option>Komplettpaket Premium</option>
+              <option>Strähnen</option>
+              <option>Dauerwelle + Haarschnitt</option>
+              <option>Damen-Haarschnitt</option>
+              <option>Waschen, Schneiden, Föhnen</option>
+              <option>Spitzen schneiden</option>
+              <option>Föhnen / Styling</option>
+              <option>Ansatz färben</option>
+              <option>Komplett färben</option>
+              <option>Augenbrauen mit Faden</option>
+            </select>
+          </label>
+          <label class="field">Deine Handynummer (sieht nur, wer übernimmt, und Lativ)<input id="aPhone" type="tel" maxlength="25" autocomplete="tel" placeholder="0176 …"></label>
+          <input id="aWeb" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <div class="err" id="aErr"></div>
+          <div class="actions">
+            <button class="btn btn-gold btn-sm" id="aSend">Veröffentlichen</button>
+            <button class="btn btn-ghost btn-sm" id="aCancel">Abbrechen</button>
+          </div>
+        </div>
+
+        <div id="tbMsg"></div>
+        <div class="sub">FREIE TERMINE</div>
+        <div class="tb-list" id="offers"><div class="empty">Termine werden geladen …</div></div>
+      </div>
+
+      <div class="admin">
+        <button class="btn btn-ghost btn-sm" id="btnAdmin">🔒 Bereich für Lativ</button>
+        <div class="panel hidden" id="adminLogin">
+          <label class="field">PIN eingeben<input id="pin" type="password" inputmode="numeric" autocomplete="off"></label>
+          <div class="err" id="pinErr"></div>
+          <div class="actions"><button class="btn btn-gold btn-sm" id="pinOk">Öffnen</button></div>
+        </div>
+        <div class="panel hidden" id="adminView">
+          <div style="font-family:Cinzel,serif;font-size:1.2rem;margin-bottom:6px">Alle Termine in der Börse</div>
+          <div id="log"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="buchen">
+    <div class="wrap">
+      <div class="eyebrow">Online buchen</div>
+      <h2>Termin sichern</h2>
+      <p>Wir arbeiten nur mit Termin. Such dir online einen freien Termin aus – dauert keine Minute.</p>
+      <a class="btn btn-gold js-book" href="https://cal.eu/lativfadecut">Jetzt Termin buchen</a>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="eyebrow">Kontakt</div>
+      <h2>So findest du uns</h2>
+      <div class="contact">
+        <div class="info">
+          <h3>ADRESSE</h3>
+          <p>Lativ Fade Cut<br>Georgenstraße 3<br>86152 Augsburg</p>
+          <h3>ÖFFNUNGSZEITEN</h3>
+          <table class="hours">
+            <tr class="closed"><td>Montag</td><td>geschlossen</td></tr>
+            <tr><td>Dienstag – Samstag</td><td>9:00 – 18:00 Uhr</td></tr>
+            <tr class="closed"><td>Sonntag</td><td>geschlossen</td></tr>
+          </table>
+          <p style="margin:0 0 20px;color:var(--muted);font-size:.92rem">Termine nur nach Vereinbarung.</p>
+          <h3>KONTAKT</h3>
+          <p>Telefon: <a href="tel:+4917674746361">+49 176 74746361</a></p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <a class="btn btn-ghost" href="https://wa.me/4917674746361">WhatsApp</a>
+            <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Georgenstra%C3%9Fe+3%2C+86152+Augsburg">Route</a>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px">
+            <a class="btn btn-ghost" href="https://www.instagram.com/lativfadecut1">Instagram</a>
+            <a class="btn btn-ghost" href="https://www.tiktok.com/@lativfadecut">TikTok</a>
+          </div>
+        </div>
+        <div class="photo" role="img" aria-label="Rathausplatz Augsburg"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin-bottom:10px"><b style="color:var(--text)">Impressum</b><br>Latif Sherifi · Lativ Fade Cut<br>Georgenstraße 3 · 86152 Augsburg<br>Telefon: +49 176 74746361</p>
+    © <span id="y"></span> Lativ Fade Cut · Augsburg
+  </div>
+</footer>
+
+<div class="float"><a class="btn btn-gold js-book" href="https://cal.eu/lativfadecut">Termin buchen</a></div>
+
+<script>
+  // ===== SCHALTER: auf true stellen, sobald Kunden online buchen können =====
+  var BUCHUNG_OFFEN = false;
+  var CAL_LINK = "https://cal.eu/lativfadecut";
+  if (BUCHUNG_OFFEN) {
+    document.querySelectorAll(".js-book").forEach(function(a){ a.href = CAL_LINK; });
+  } else {
+    document.documentElement.classList.add("closed");
+    var soonText = { header:"Bald verfügbar", hero:"Online-Buchung bald verfügbar", book:"Bald wird gedroppt", float:"Online-Buchung bald verfügbar" };
+    document.querySelectorAll(".js-book").forEach(function(a){
+      var where = a.closest("header") ? "header" : a.closest(".hero") ? "hero" : a.closest(".float") ? "float" : "book";
+      a.removeAttribute("href"); a.setAttribute("aria-disabled", "true"); a.classList.add("soon"); a.textContent = soonText[where];
+    });
+    document.querySelectorAll("#preise a.row").forEach(function(r){
+      r.removeAttribute("href"); r.setAttribute("aria-disabled", "true"); r.tabIndex = -1;
+      var em = r.querySelector("strong em"); if (em) em.textContent = "Bald online";
+    });
+    var copy = document.querySelector(".hero .copy");
+    if (copy) copy.insertAdjacentHTML("afterbegin", '<div class="closed-pill">ZURZEIT GESCHLOSSEN</div>');
+    var note = document.querySelector("#preise .note");
+    if (note) note.textContent = "Die Online-Buchung startet bald – schau bald wieder vorbei. Bezahlung bar oder mit Karte. Alle Preise inkl. MwSt.";
+    var bk = document.getElementById("buchen");
+    if (bk) { bk.querySelector("h2").textContent = "Bald verfügbar"; bk.querySelector("p").textContent = "Die Online-Buchung ist zurzeit geschlossen. Bald kannst du hier direkt deinen Termin buchen."; }
+  }
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  // ================= TERMIN-BÖRSE =================
+  // Web-App-URL aus Google Apps Script hier eintragen:
+  var API_URL = "";
+
+  var DAYS = ["So","Mo","Di","Mi","Do","Fr","Sa"];
+  var offers = [], openId = null;
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+  function fmt(o){ var x=new Date(o.datum+"T12:00"); return DAYS[x.getDay()]+" "+x.getDate()+"."+(x.getMonth()+1)+". – "+o.uhrzeit+" Uhr"; }
+  function waLink(tel, text){
+    var d = String(tel).replace(/\D/g,"");
+    if (d.indexOf("00") === 0) d = d.slice(2); else if (d.indexOf("0") === 0) d = "49" + d.slice(1);
+    return "https://wa.me/" + d + "?text=" + encodeURIComponent(text);
+  }
+  function msg(html){ $("tbMsg").innerHTML = html ? '<div class="panel">'+html+'</div>' : ""; }
+
+  function api(method, params, body){
+    var url = API_URL + (params ? "?" + new URLSearchParams(params).toString() : "");
+    var opt = method === "POST" ? { method:"POST", body: JSON.stringify(body) } : {};
+    return fetch(url, opt).then(function(r){ return r.json(); });
+  }
+
+  function load(){
+    return api("GET").then(function(res){
+      offers = res.ok ? res.offers : [];
+      render();
+    }).catch(function(){
+      $("offers").innerHTML = '<div class="empty">Die Börse ist gerade nicht erreichbar. Bitte später nochmal versuchen.</div>';
+    });
+  }
+
+  function render(){
+    var list = offers.slice().sort(function(a,b){ return (a.vergeben?1:0)-(b.vergeben?1:0) || (a.datum+a.uhrzeit).localeCompare(b.datum+b.uhrzeit); });
+    if (!list.length){ $("offers").innerHTML = '<div class="empty">Gerade keine Termine in der Börse.</div>'; return; }
+    $("offers").innerHTML = list.map(function(o){
+      var pill = '<span class="pill free">Tausch</span>';
+      var body;
+      if (o.vergeben) body = '<div class="what">✓ Vergeben</div>';
+      else if (openId === o.id) body =
+        '<label class="field">Dein Name<input id="tName" maxlength="40" autocomplete="name"></label>'+
+        '<label class="field">Deine Handynummer<input id="tPhone" type="tel" maxlength="25" autocomplete="tel"></label>'+
+        '<div class="err" id="tErr"></div>'+
+        '<div class="actions"><button class="btn btn-gold btn-sm" data-confirm="'+esc(o.id)+'">Termin übernehmen</button><button class="btn btn-ghost btn-sm" data-cancel="1">Abbrechen</button></div>';
+      else body = '<div class="actions" style="margin-top:4px"><button class="btn btn-gold btn-sm" data-take="'+esc(o.id)+'">Übernehmen</button></div>';
+      return '<div class="offer'+(o.vergeben?' taken':'')+'"><div class="top"><div><div class="when">'+esc(fmt(o))+'</div><div class="what">'+esc(o.leistung)+' · abgegeben von '+esc(o.vorname)+'</div></div>'+pill+'</div>'+body+'</div>';
+    }).join("");
+  }
+
+  $("offers").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.take){ openId = b.dataset.take; render(); var i=$("tName"); if(i) i.focus(); return; }
+    if (b.dataset.cancel){ openId = null; render(); return; }
+    if (b.dataset.confirm){
+      var n = $("tName").value.trim(), p = $("tPhone").value.trim();
+      if (!n || p.replace(/\D/g,"").length < 6){ $("tErr").textContent = "Bitte Name und Handynummer eingeben."; return; }
+      var o = offers.find(function(x){ return x.id == b.dataset.confirm; });
+      b.disabled = true; b.textContent = "Moment …";
+      api("POST", null, { action:"take", id:o.id, name:n, telefon:p }).then(function(res){
+        if (!res.ok){
+          $("tErr").textContent = res.error === "vergeben" ? "Zu spät – der Termin wurde gerade vergeben." : "Das hat nicht geklappt. Bitte nochmal versuchen.";
+          b.disabled = false; b.textContent = "Termin übernehmen"; if (res.error === "vergeben") load(); return;
+        }
+        openId = null;
+        var text = "Hi " + res.vorname + ", ich habe deinen Termin bei Lativ Fade Cut übernommen (" + fmt(o) + ", " + o.leistung + "). Ich bin " + n + ".";
+        msg('<b>✓ Termin übernommen!</b><br><span class="what">Melde dich jetzt bei '+esc(res.vorname)+'. Lativ weiß schon Bescheid, dass du kommst.</span>'+
+            '<div class="actions"><a class="btn btn-gold btn-sm" href="'+esc(waLink(res.telefon, text))+'" target="_blank" rel="noopener">WhatsApp an '+esc(res.vorname)+'</a></div>'+
+            '<div class="what" style="margin-top:8px">Nummer: '+esc(res.telefon)+'</div>');
+        load();
+        $("tbMsg").scrollIntoView({behavior:"smooth", block:"center"});
+      }).catch(function(){ $("tErr").textContent = "Keine Verbindung. Bitte nochmal versuchen."; b.disabled = false; b.textContent = "Termin übernehmen"; });
+    }
+  });
+
+  var fA = $("formAbgeben"), bA = $("btnAbgeben");
+  bA.onclick = function(){ fA.classList.remove("hidden"); bA.classList.add("hidden"); msg(""); $("aName").focus(); };
+  $("aCancel").onclick = function(){ fA.classList.add("hidden"); bA.classList.remove("hidden"); $("aErr").textContent=""; };
+  $("aDate").min = new Date().toISOString().slice(0,10);
+  ["aName","aDate","aTime","aPhone"].forEach(function(id){ $(id).addEventListener("input",function(){ $("aErr").textContent=""; }); });
+  $("aSend").onclick = function(){
+    var b = this, n=$("aName").value.trim(), dt=$("aDate").value, tm=$("aTime").value, ph=$("aPhone").value.trim();
+    if (!n || !dt || !tm || ph.replace(/\D/g,"").length < 6){ $("aErr").textContent = "Bitte alle Felder ausfüllen."; return; }
+    b.disabled = true; b.textContent = "Moment …";
+    api("POST", null, { action:"create", vorname:n, datum:dt, uhrzeit:tm, leistung:$("aService").value, telefon:ph, website:$("aWeb").value })
+      .then(function(res){
+        b.disabled = false; b.textContent = "Veröffentlichen";
+        if (!res.ok){ $("aErr").textContent = res.error === "datum" ? "Das Datum liegt in der Vergangenheit." : res.error === "voll" ? "Die Börse ist gerade voll. Bitte später nochmal versuchen." : "Bitte prüfe deine Angaben."; return; }
+        $("aName").value = $("aDate").value = $("aTime").value = $("aPhone").value = "";
+        $("aCancel").click();
+        msg('<b>✓ Dein Termin steht in der Börse.</b><br><span class="what">Wenn ihn jemand übernimmt, meldet er sich per WhatsApp oder Anruf bei dir.</span>');
+        load();
+      }).catch(function(){ b.disabled = false; b.textContent = "Veröffentlichen"; $("aErr").textContent = "Keine Verbindung. Bitte nochmal versuchen."; });
+  };
+
+  $("btnAdmin").onclick = function(){ $("adminLogin").classList.toggle("hidden"); };
+  $("pinOk").onclick = function(){
+    if (!API_URL) { $("pinErr").textContent = "Die Börse ist noch nicht verbunden."; return; }
+    api("GET", { action:"admin", pin:$("pin").value }).then(function(res){
+      if (!res.ok){ $("pinErr").textContent = "Falscher PIN."; return; }
+      $("adminLogin").classList.add("hidden"); $("adminView").classList.remove("hidden");
+      $("btnAdmin").textContent = "🔓 Bereich für Lativ";
+      $("log").innerHTML = res.rows.length ? res.rows.map(function(r){
+        var head = r.status === "vergeben"
+          ? '<b>'+esc(r.vorname)+'</b> → <b>'+esc(r.uebernommen_von)+'</b>'
+          : '<b>'+esc(r.vorname)+'</b> · noch offen';
+        var tel = 'Abgeber: '+esc(r.telefon_abgeber) + (r.status === "vergeben" ? ' · Übernehmer: '+esc(r.telefon_uebernehmer) : '');
+        return '<div class="logrow">'+head+'<small>'+esc(fmt(r))+' · '+esc(r.leistung)+'</small><small>'+tel+'</small></div>';
+      }).join("") : '<div class="what">Noch keine Einträge.</div>';
+    }).catch(function(){ $("pinErr").textContent = "Keine Verbindung."; });
+  };
+
+  if (!API_URL){ $("tbOpen").classList.add("hidden"); $("tbClosed").classList.remove("hidden"); }
+  else load();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+{
+  const stage = document.getElementById("stage");
+  const canvas = document.getElementById("logo3d");
+  const hero = stage.parentElement;
+  const reduce = false; // Animation immer an (gewünscht)
+
+  function start(img){
+    if (!window.THREE) return flat();
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); } catch(e){ return flat(); }
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.6));
+    stage.classList.add("gl");
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
+    const group = new THREE.Group(); scene.add(group);
+
+    // Logo in Kacheln zerlegen – nur Kacheln mit sichtbarem Logo
+    const COLS = 32, ROWS = Math.round(32 * img.height / img.width);
+    const LW = 4, LH = LW * img.height / img.width, TW = LW / COLS, TH = LH / ROWS;
+    const LAYERS = 14, DZ = 0.018;
+    const cv = document.createElement("canvas"); cv.width = img.width; cv.height = img.height;
+    const cx = cv.getContext("2d"); cx.drawImage(img, 0, 0);
+    const px = cx.getImageData(0, 0, img.width, img.height).data;
+    const cells = [];
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const x0 = Math.floor(c * img.width / COLS), x1 = Math.floor((c + 1) * img.width / COLS);
+      const y0 = Math.floor(r * img.height / ROWS), y1 = Math.floor((r + 1) * img.height / ROWS);
+      let hit = false;
+      for (let y = y0; y < y1 && !hit; y += 2) for (let x = x0; x < x1; x += 2) if (px[(y * img.width + x) * 4 + 3] > 20) { hit = true; break; }
+      if (hit) cells.push([c, r, Math.random(), Math.random(), Math.random(), Math.random()]);
+    }
+
+    const tex = new THREE.Texture(img); tex.needsUpdate = true;
+    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    function makeMesh(layerFrom, layerTo, front){
+      const base = new THREE.PlaneGeometry(TW, TH);
+      const g = new THREE.InstancedBufferGeometry();
+      g.index = base.index; g.attributes.position = base.attributes.position; g.attributes.uv = base.attributes.uv;
+      const n = cells.length * (layerTo - layerFrom);
+      const aCell = new Float32Array(n * 2), aRand = new Float32Array(n * 4), aLayer = new Float32Array(n);
+      let i = 0;
+      for (let L = layerFrom; L < layerTo; L++) for (const k of cells) {
+        aCell[i*2] = k[0]; aCell[i*2+1] = k[1];
+        aRand.set([k[2], k[3], k[4], k[5]], i * 4); aLayer[i] = L; i++;
+      }
+      g.setAttribute("aCell", new THREE.InstancedBufferAttribute(aCell, 2));
+      g.setAttribute("aRand", new THREE.InstancedBufferAttribute(aRand, 4));
+      g.setAttribute("aLayer", new THREE.InstancedBufferAttribute(aLayer, 1));
+      g.instanceCount = n;
+      const m = new THREE.ShaderMaterial({
+        uniforms: { map:{ value:tex }, uP:{ value:0 }, uTime:{ value:0 }, uRot:{ value:new THREE.Vector2() }, uTex:{ value:new THREE.Vector2(1 / img.width, 1 / img.height) }, uGrid:{ value:new THREE.Vector2(COLS, ROWS) },
+                    uSize:{ value:new THREE.Vector2(LW, LH) }, uDZ:{ value:DZ }, uLayers:{ value:LAYERS } },
+        vertexShader: `
+          uniform float uP, uDZ; uniform vec2 uGrid, uSize;
+          attribute vec2 aCell; attribute vec4 aRand; attribute float aLayer;
+          varying vec2 vUv; varying float vL;
+          vec3 rot(vec3 v, vec3 a, float t){ return v*cos(t) + cross(a,v)*sin(t) + a*dot(a,v)*(1.0-cos(t)); }
+          void main(){
+            float d = aRand.w * 0.45;
+            float t = clamp((uP - d) / 0.55, 0.0, 1.0);
+            t = 1.0 - pow(1.0 - t, 3.0);
+            vec2 tile = uSize / uGrid;
+            vec3 c = vec3((aCell.x + 0.5) * tile.x - uSize.x * 0.5, uSize.y * 0.5 - (aCell.y + 0.5) * tile.y, 0.0);
+            vec3 axis = normalize(aRand.xyz * 2.0 - 1.0 + 0.001);
+            vec3 local = rot(position + vec3(0.0, 0.0, -aLayer * uDZ), axis, (1.0 - t) * (3.0 + aRand.z * 6.0));
+            vec3 scatter = (aRand.xyz * 2.0 - 1.0) * vec3(7.0, 5.0, 6.0) + vec3(0.0, -1.5, 2.5);
+            vUv = vec2((aCell.x + uv.x) / uGrid.x, 1.0 - (aCell.y + 1.0 - uv.y) / uGrid.y);
+            vL = aLayer;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(c + local + scatter * (1.0 - t), 1.0);
+          }`,
+        fragmentShader: front ? `
+          uniform sampler2D map; varying vec2 vUv;
+          void main(){ vec4 c = texture2D(map, vUv); if (c.a < 0.02) discard; gl_FragColor = c; }` : `
+          uniform sampler2D map; uniform float uLayers; varying vec2 vUv; varying float vL;
+          void main(){
+            vec4 c = texture2D(map, vUv); if (c.a < 0.5) discard;
+            float k = 1.0 - vL / uLayers * 0.45;
+            gl_FragColor = vec4(mix(c.rgb * 0.62, vec3(0.45, 0.31, 0.11), 0.45) * k, 1.0);
+          }`,
+        side: THREE.DoubleSide, transparent: front, depthWrite: !front
+      });
+      const mesh = new THREE.Mesh(g, m); mesh.frustumCulled = false; mesh.renderOrder = front ? 2 : 1;
+      group.add(mesh); return m;
+    }
+    const mats = [makeMesh(1, LAYERS, false), makeMesh(0, 1, true)];
+
+    // Funkel-Sterne auf dem Diamant-Logo
+    const SP = [], SPh = [];
+    for (let tries = 0; SP.length < 3 * 46 && tries < 6000; tries++) {
+      const x = Math.random() * img.width | 0, y = Math.random() * img.height | 0, o = (y * img.width + x) * 4;
+      if (px[o + 3] > 200 && px[o] + px[o + 1] + px[o + 2] > 520) { SP.push(x / img.width * LW - LW / 2, LH / 2 - y / img.height * LH, 0.03); SPh.push(Math.random() * 6.283); }
+    }
+    const spg = new THREE.BufferGeometry(); spg.setAttribute("position", new THREE.Float32BufferAttribute(SP, 3)); spg.setAttribute("aPh", new THREE.Float32BufferAttribute(SPh, 1));
+    const sparkMat = new THREE.ShaderMaterial({
+      uniforms:{ uTime:{ value:0 }, uPR:{ value:renderer.getPixelRatio() } },
+      vertexShader:`uniform float uTime, uPR; attribute float aPh; varying float vA;
+        void main(){ float s = pow(max(sin(uTime * (1.1 + fract(aPh) * .8) + aPh * 3.), 0.), 10.); vA = s;
+          gl_PointSize = (10. + 34. * s) * uPR; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }`,
+      fragmentShader:`varying float vA;
+        void main(){ vec2 d = abs(gl_PointCoord - .5) * 2.;
+          float st = max(0., 1. - d.x * 9.) * max(0., 1. - d.y) + max(0., 1. - d.y * 9.) * max(0., 1. - d.x);
+          float glow = max(0., 1. - length(d)) ; float a = (st + glow * glow * .6) * vA;
+          gl_FragColor = vec4(vec3(1., .9, .65) * a, a); }`,
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+    });
+    const sparks = new THREE.Points(spg, sparkMat); sparks.renderOrder = 3; sparks.frustumCulled = false; sparks.visible = false; group.add(sparks);
+
+    // Goldstaub + feines Linien-Gitter im Hintergrund
+    const N = 380, dp = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) dp.set([(Math.random() - .5) * 16, (Math.random() - .5) * 10, -Math.random() * 8 - 1], i * 3);
+    const dg = new THREE.BufferGeometry(); dg.setAttribute("position", new THREE.BufferAttribute(dp, 3));
+    const dust = new THREE.Points(dg, new THREE.PointsMaterial({ color:0xd9ad55, size:0.035, transparent:true, opacity:.55, depthWrite:false }));
+
+    // Goldene Fäden hinter dem Logo – fließen nach unten wie ein Wasserfall
+    const TN = 160, SEG = 70, tp = [], ts = [], ti = [];
+    for (let i = 0; i < TN; i++) {
+      const sgn = Math.random() < .5 ? -1 : 1, x = sgn * Math.pow(Math.random(), 1.25) * 7.5;
+      const z = -1.2 - Math.random() * 4, seed = Math.random();
+      for (let j = 0; j <= SEG; j++) {
+        tp.push(x, 6.5 - j * 13 / SEG, z); ts.push(seed);
+        if (j) ti.push(i * (SEG + 1) + j - 1, i * (SEG + 1) + j);
+      }
+    }
+    const tg = new THREE.BufferGeometry();
+    tg.setAttribute("position", new THREE.Float32BufferAttribute(tp, 3));
+    tg.setAttribute("aSeed", new THREE.Float32BufferAttribute(ts, 1));
+    tg.setIndex(ti);
+    const threadMat = new THREE.ShaderMaterial({
+      uniforms: { uTime:{ value:0 } },
+      vertexShader: `
+        uniform float uTime; attribute float aSeed; varying float vY; varying float vSeed;
+        void main(){
+          vec3 p = position;
+          p.x += sin(p.y * 0.55 + uTime * 0.7 + aSeed * 6.28) * 0.14 + sin(p.y * 1.6 - uTime * 1.1 + aSeed * 11.0) * 0.04;
+          vY = p.y; vSeed = aSeed;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+        }`,
+      fragmentShader: `
+        uniform float uTime; varying float vY; varying float vSeed;
+        void main(){
+          float f = fract(vY * (0.12 + vSeed * 0.08) + uTime * (0.25 + vSeed * 0.35) + vSeed * 7.0);
+          float drop = pow(1.0 - f, 3.0);
+          float fade = smoothstep(-6.5, -2.5, vY) * smoothstep(6.5, 3.0, vY);
+          float a = (0.11 + drop * 0.75) * fade * (0.35 + vSeed * 0.65);
+          gl_FragColor = vec4(mix(vec3(0.78, 0.56, 0.22), vec3(1.0, 0.88, 0.6), drop) * a, a);
+        }`,
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+    });
+    const threads = new THREE.LineSegments(tg, threadMat); threads.renderOrder = 0; threads.frustumCulled = false;
+    // Fäden laufen jetzt im Seiten-Hintergrund
+
+
+    // ===== JARVIS-HUD: Energiekern, Neuronen-Kugel, gegenläufige Ringe, Teilchen, Puls-Wellen =====
+    const GOLD = 0xe2b866, HOT = 0xfff0c8;
+    const hud = new THREE.Group(); scene.add(hud);
+    const add = (o) => { o.material.transparent = true; o.material.depthWrite = false; o.material.blending = THREE.AdditiveBlending; o.renderOrder = 0; o.frustumCulled = false; return o; };
+    function ring(r, w, op, start, len, segs){
+      const m = new THREE.Mesh(new THREE.RingGeometry(r - w / 2, r + w / 2, segs || 128, 1, start || 0, len || Math.PI * 2),
+        new THREE.MeshBasicMaterial({ color:GOLD, opacity:op, side:THREE.DoubleSide }));
+      m.userData.op = op; return add(m);
+    }
+    function ticks(r, n, l1, l2, op){
+      const p = [];
+      for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, l = i % 10 === 0 ? l2 : l1;
+        p.push(Math.cos(a) * r, Math.sin(a) * r, 0, Math.cos(a) * (r + l), Math.sin(a) * (r + l), 0); }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(p, 3));
+      const m = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color:GOLD, opacity:op })); m.userData.op = op; return add(m);
+    }
+    function ringSet(items){ const g = new THREE.Group(); items.forEach(i => g.add(i)); hud.add(g); return g; }
+    const R = {
+      outer: ringSet([ring(3.25, 0.012, .35)]),
+      dash:  ringSet(Array.from({ length:36 }, (_, i) => ring(3.1, 0.035, .45, i / 36 * Math.PI * 2, Math.PI * 2 / 36 * .55, 4))),
+      tick:  ringSet([ticks(2.78, 120, 0.06, 0.16, .55)]),
+      arcs:  ringSet([ring(2.6, 0.05, .7, 0.2, 1.4), ring(2.6, 0.05, .7, 2.3, 0.6), ring(2.6, 0.05, .7, 3.6, 1.9)]),
+      thin:  ringSet([ring(2.47, 0.01, .4)]),
+      inner: ringSet([ring(2.36, 0.07, .55, 0, .35), ring(2.36, 0.07, .55, Math.PI / 2, .35), ring(2.36, 0.07, .55, Math.PI, .35), ring(2.36, 0.07, .55, Math.PI * 1.5, .35)])
+    };
+    R.arcs.rotation.x = 0.0; R.dash.position.z = -0.05; R.outer.position.z = -0.1;
+
+    // Neuronen-Kugel hinter dem Logo
+    const NP = 240, sp = [], spv = [];
+    for (let i = 0; i < NP; i++) { const y = 1 - 2 * (i + .5) / NP, rr = Math.sqrt(1 - y * y), th = i * 2.39996;
+      const v = new THREE.Vector3(Math.cos(th) * rr, y, Math.sin(th) * rr).multiplyScalar(2.15); spv.push(v); sp.push(v.x, v.y, v.z); }
+    const sl = [];
+    spv.forEach((a, i) => spv.forEach((b, j) => { if (j > i && a.distanceTo(b) < 0.62) sl.push(a.x, a.y, a.z, b.x, b.y, b.z); }));
+    const sphere = new THREE.Group(); sphere.position.z = -2.4; hud.add(sphere);
+    const sg = new THREE.BufferGeometry(); sg.setAttribute("position", new THREE.Float32BufferAttribute(sp, 3));
+    const sNodes = add(new THREE.Points(sg, new THREE.PointsMaterial({ color:HOT, size:0.045, opacity:.7 }))); sNodes.userData.op = .7;
+    const lg2 = new THREE.BufferGeometry(); lg2.setAttribute("position", new THREE.Float32BufferAttribute(sl, 3));
+    const sLines = add(new THREE.LineSegments(lg2, new THREE.LineBasicMaterial({ color:GOLD, opacity:.16 }))); sLines.userData.op = .16;
+    sphere.add(sNodes, sLines);
+
+    // Energiekern (Glühen)
+    const gc = document.createElement("canvas"); gc.width = gc.height = 128; const gx = gc.getContext("2d");
+    const grd = gx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grd.addColorStop(0, "rgba(255,244,214,1)"); grd.addColorStop(.25, "rgba(240,190,95,.55)"); grd.addColorStop(1, "rgba(200,140,40,0)");
+    gx.fillStyle = grd; gx.fillRect(0, 0, 128, 128);
+    const core = add(new THREE.Sprite(new THREE.SpriteMaterial({ map:new THREE.CanvasTexture(gc), opacity:0 })));
+    core.position.z = -0.6; hud.add(core);
+
+    // Energie-Teilchen auf Umlaufbahnen
+    const EP = 260, ep = new Float32Array(EP * 3), eo = [];
+    for (let i = 0; i < EP; i++) eo.push({ r:2.3 + Math.random() * 1.3, a:Math.random() * 6.283, v:(Math.random() < .5 ? -1 : 1) * (0.15 + Math.random() * 0.5), z:(Math.random() - .5) * 0.6 });
+    const eg = new THREE.BufferGeometry(); eg.setAttribute("position", new THREE.BufferAttribute(ep, 3));
+    const energy = add(new THREE.Points(eg, new THREE.PointsMaterial({ color:HOT, size:0.035, opacity:.85 }))); energy.userData.op = .85;
+    hud.add(energy);
+
+    // Puls-Wellen
+    const waves = [0, 1, 2].map(() => { const w = ring(1, 0.02, 0); w.userData.op = 0; hud.add(w); return w; });
+    const shock = ring(1, 0.08, 0); hud.add(shock);
+
+    let W = 0, H = 0, lift = 0;
+    function size(){
+      W = stage.clientWidth; H = stage.clientHeight;
+      renderer.setSize(W, H, false); camera.aspect = W / H;
+      const copyH = stage.querySelector(".copy").offsetHeight + parseFloat(getComputedStyle(stage).paddingBottom);
+      const free = Math.max(0.35, (H - copyH - 20) / H);             // Anteil über dem Text
+      const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      const dist = Math.max(6.1 / (free * 0.98), 5.0 / (0.96 * camera.aspect)) / (2 * tan);
+      camera.position.set(0, 0, dist); camera.updateProjectionMatrix();
+      const visH = 2 * dist * tan; lift = visH / 2 - visH * free / 2;
+    }
+    size(); new ResizeObserver(size).observe(stage);
+
+    let mx = 0, my = 0, tx = 0, ty = 0;
+    addEventListener("pointermove", e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; }, { passive:true });
+
+    const t0 = performance.now();
+    const clamp = (x) => Math.min(1, Math.max(0, x));
+    const back = (x) => { const c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+    function frame(now){
+      const time = (now - t0) / 1000;
+      const r = hero.getBoundingClientRect();
+      const s = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - H)));
+      const burst = s < 0.6 ? 0 : (s - 0.6) / 0.4;
+
+      // 1) Kern lädt auf (0–1.3 s)  2) Logo knallt rein (1.3 s)  3) HUD läuft
+      const charge = clamp(time / 1.3), slam = clamp((time - 1.25) / 0.45), hit = time - 1.45;
+      const hudIn = clamp((time - 0.2) / 1.2);
+      group.visible = time > 1.25;
+      const sc = 0.15 + 0.85 * back(slam);
+      group.scale.setScalar(sc);
+      mats.forEach(m => { m.uniforms.uP.value = 1 - burst * burst * 0.12; m.uniforms.uTime.value = time; m.uniforms.uRot.value.set(group.rotation.x, group.rotation.y); });
+      sparkMat.uniforms.uTime.value = time;
+
+      mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
+      group.rotation.y = mx * 0.4 + Math.sin(time * 0.6) * 0.1 + s * 0.6;
+      group.rotation.x = my * 0.2 + s * 0.15;
+      group.position.y = lift - s * 0.4;
+
+      hud.position.y = lift - s * 0.4;
+      hud.rotation.y = mx * 0.18 + s * 0.5; hud.rotation.x = my * 0.12;
+      hud.scale.setScalar(0.88 * (0.55 + 0.45 * (1 - Math.pow(1 - hudIn, 3))) * (1 + s * 0.25));
+      const fadeS = 1 - s * 0.55;
+      R.outer.rotation.z = time * 0.05;  R.dash.rotation.z = -time * 0.12;
+      R.tick.rotation.z = time * 0.18;   R.arcs.rotation.z = -time * 0.45 + Math.sin(time * 0.9) * 0.3;
+      R.thin.rotation.z = time * 0.3;    R.inner.rotation.z = time * 0.8;
+      Object.values(R).forEach((g, k) => g.children.forEach(m => m.material.opacity = m.userData.op * clamp(hudIn * 1.4 - k * 0.08) * fadeS));
+      sphere.rotation.y = time * 0.15; sphere.rotation.x = Math.sin(time * 0.2) * 0.3;
+      sNodes.material.opacity = sNodes.userData.op * hudIn * 0.8 * fadeS;
+      sLines.material.opacity = sLines.userData.op * hudIn * fadeS;
+
+      // Kern: lädt auf, Blitz beim Einschlag, dann ruhiges Pulsieren
+      const flash = hit > 0 ? Math.exp(-hit * 4) : 0;
+      core.scale.setScalar(1.2 + charge * 3.2 + flash * 5);
+      core.material.opacity = Math.min(1, charge * 0.55 + flash * 0.9) * (time > 1.6 ? 0.55 : 1) * fadeS;
+
+      // Teilchen: vor dem Einschlag spiralförmig nach innen, danach auf Umlaufbahnen
+      const pull = time < 1.3 ? 1 - charge : 0;
+      for (let i = 0; i < EP; i++) { const o = eo[i]; o.a += o.v * 0.016 * (1 + pull * 4);
+        const rr = o.r * (1 + pull * 1.6) * (time < 1.3 ? 1 : 1 + flash * 0.3);
+        ep[i * 3] = Math.cos(o.a) * rr; ep[i * 3 + 1] = Math.sin(o.a) * rr; ep[i * 3 + 2] = o.z; }
+      eg.attributes.position.needsUpdate = true;
+      energy.material.opacity = energy.userData.op * hudIn * fadeS;
+
+      // Schockwelle beim Einschlag + Puls-Wellen alle 3 s
+      if (hit > 0 && hit < 1.2) { shock.visible = true; shock.scale.setScalar(1.6 + hit * 4); shock.material.opacity = (1 - hit / 1.2) * 0.8; } else shock.visible = false;
+      waves.forEach((w, i) => { const ph = ((time - 2 + i) % 3) / 3; const on = time > 2 + i;
+        w.scale.setScalar(2.2 + ph * 2.4); w.material.opacity = on ? (1 - ph) * 0.35 * fadeS : 0; });
+
+      threadMat.uniforms.uTime.value = time;
+      threads.position.y = lift; threads.rotation.y = mx * 0.06;
+      dust.rotation.y = time * 0.02; dust.position.y = Math.sin(time * 0.3) * 0.1;
+      if (r.bottom > 0) renderer.render(scene, camera);
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Ersatz ohne 3D: Wasserfall-Fäden in 2D + schwebendes Logo
+  function flat(){
+    stage.classList.remove("gl"); stage.classList.add("flat");
+    const c2 = document.createElement("canvas"); c2.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
+    canvas.replaceWith(c2); const g = c2.getContext("2d"); if (!g) return;
+    const T = []; for (let i = 0; i < 120; i++) { const s = Math.random() < .5 ? -1 : 1; T.push({ x:.5 + s * Math.pow(Math.random(), 1.25) * .5, k:Math.random() }); }
+    (function loop(now){
+      const w = c2.width = stage.clientWidth * Math.min(devicePixelRatio, 2), h = c2.height = stage.clientHeight * Math.min(devicePixelRatio, 2), t = now / 1000;
+      g.lineWidth = Math.min(devicePixelRatio, 2);
+      for (const d of T) {
+        const x = d.x * w, sp = (0.25 + d.k * 0.35) * h * 0.35, len = h * (0.12 + d.k * 0.1);
+        g.strokeStyle = "rgba(200,145,60," + (0.025 + d.k * 0.035) + ")";
+        g.beginPath(); g.moveTo(x, 0); g.lineTo(x + Math.sin(t * .7 + d.k * 6) * 6, h); g.stroke();
+        const y = ((t * sp + d.k * h * 3) % (h + len)) - len * 0.2;
+        const gr = g.createLinearGradient(0, y - len, 0, y);
+        gr.addColorStop(0, "rgba(255,215,140,0)"); gr.addColorStop(1, "rgba(255,225,160," + (0.35 + d.k * 0.5) + ")");
+        g.strokeStyle = gr; g.beginPath(); g.moveTo(x, y - len); g.lineTo(x + Math.sin(t * .7 + d.k * 6) * 6 * y / h, y); g.stroke();
+      }
+      requestAnimationFrame(loop);
+    })(performance.now());
+  }
+
+  const img = new Image();
+  img.onload = () => { try { start(img); } catch(e){ flat(); } };
+  img.onerror = flat;
+  img.src = "img/logo.png";
+}
+</script>
+
+<script>
+{
+  // ===== 3D-Hintergrund für die ganze Seite: Flug durch HUD-Ringe, Gold-Wasserfall, Teilchen =====
+  const cv = document.getElementById("bg3d");
+  let R3;
+  try { if (!window.THREE) throw 0; R3 = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true }); } catch(e){ cv.style.display = "none"; }
+  if (R3) {
+    R3.setPixelRatio(Math.min(devicePixelRatio, 1.1));
+    const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, 1, 0.1, 120); scene.add(cam);
+    const ADD = { transparent:true, depthWrite:false, blending:THREE.AdditiveBlending };
+    const GOLD = 0xe2b866;
+    const DEPTH = 90, GATES = 11, gates = [];
+    for (let i = 0; i < GATES; i++) {
+      const g = new THREE.Group(), r = 5.5 + (i % 3) * 0.8, z = -i * DEPTH / GATES - 6;
+      const m1 = new THREE.Mesh(new THREE.RingGeometry(r - .015, r + .015, 160), new THREE.MeshBasicMaterial(Object.assign({ color:GOLD, opacity:.2 }, ADD)));
+      const arcs = [0, 2.2, 4.1].map((a, k) => new THREE.Mesh(new THREE.RingGeometry(r + .25, r + .32, 64, 1, a + i, .7 + k * .4), new THREE.MeshBasicMaterial(Object.assign({ color:GOLD, opacity:.26, side:THREE.DoubleSide }, ADD))));
+      const tp = []; for (let t = 0; t < 90; t++) { const a = t / 90 * 6.283, l = t % 10 ? .12 : .3; tp.push(Math.cos(a) * (r - .2), Math.sin(a) * (r - .2), 0, Math.cos(a) * (r - .2 - l), Math.sin(a) * (r - .2 - l), 0); }
+      const tg = new THREE.BufferGeometry(); tg.setAttribute("position", new THREE.Float32BufferAttribute(tp, 3));
+      const tk = new THREE.LineSegments(tg, new THREE.LineBasicMaterial(Object.assign({ color:GOLD, opacity:.18 }, ADD)));
+      g.add(m1, tk, ...arcs); g.position.set((i % 2 ? 1 : -1) * 0.6, (i % 3 - 1) * 0.5, z);
+      g.userData = { spin:(i % 2 ? 1 : -1) * (0.05 + i * 0.01), z };
+      scene.add(g); gates.push(g);
+    }
+    // Teilchen im ganzen Tunnel (Tiefe beim Scrollen)
+    const N = 1400, dp = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, rr = 1.5 + Math.random() * 9; dp.set([Math.cos(a) * rr, Math.sin(a) * rr, 8 - Math.random() * (DEPTH + 20)], i * 3); }
+    const dg = new THREE.BufferGeometry(); dg.setAttribute("position", new THREE.BufferAttribute(dp, 3));
+    const dust = new THREE.Points(dg, new THREE.PointsMaterial(Object.assign({ color:0xf0cc84, size:0.05, opacity:.7 }, ADD)));
+    scene.add(dust);
+    // Gold-Wasserfall hängt an der Kamera – immer sichtbar, auf jeder Höhe der Seite
+    const TN = 150, SEG = 60, tp = [], ts = [], ti = [];
+    for (let i = 0; i < TN; i++) { const sg = Math.random() < .5 ? -1 : 1, x = sg * Math.pow(Math.random(), 1.1) * 9, z = -6 - Math.random() * 6, sd = Math.random();
+      for (let j = 0; j <= SEG; j++) { tp.push(x, 7 - j * 14 / SEG, z); ts.push(sd); if (j) ti.push(i * (SEG + 1) + j - 1, i * (SEG + 1) + j); } }
+    const thg = new THREE.BufferGeometry(); thg.setAttribute("position", new THREE.Float32BufferAttribute(tp, 3)); thg.setAttribute("aSeed", new THREE.Float32BufferAttribute(ts, 1)); thg.setIndex(ti);
+    const thm = new THREE.ShaderMaterial(Object.assign({
+      uniforms:{ uTime:{ value:0 } },
+      vertexShader:`uniform float uTime; attribute float aSeed; varying float vY; varying float vS;
+        void main(){ vec3 p = position; p.x += sin(p.y*.55 + uTime*.7 + aSeed*6.28)*.14 + sin(p.y*1.6 - uTime*1.1 + aSeed*11.)*.04;
+        vY = p.y; vS = aSeed; gl_Position = projectionMatrix * modelViewMatrix * vec4(p,1.); }`,
+      fragmentShader:`uniform float uTime; varying float vY; varying float vS;
+        void main(){ float f = fract(vY*(.12+vS*.08) + uTime*(.25+vS*.35) + vS*7.); float d = pow(1.-f,3.);
+        float fade = smoothstep(-7.,-3.,vY)*smoothstep(7.,3.5,vY); float a = (.08 + d*.6)*fade*(.3+vS*.7);
+        gl_FragColor = vec4(mix(vec3(.78,.56,.22), vec3(1.,.88,.6), d)*a, a); }`
+    }, ADD));
+    const threads = new THREE.LineSegments(thg, thm); threads.frustumCulled = false; cam.add(threads);
+
+    function size(){ const w = innerWidth, h = innerHeight; R3.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+    size(); addEventListener("resize", size);
+    let px = 0, py = 0, tx = 0, ty = 0, sm = 0;
+    addEventListener("pointermove", e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; }, { passive:true });
+    const t0 = performance.now();
+    (function loop(now){
+      const t = (now - t0) / 1000;
+      const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      sm += (scrollY / max - sm) * 0.08;                         // weiches Scrollen
+      px += (tx - px) * .05; py += (ty - py) * .05;
+      cam.position.set(px * .6, -py * .4, 10 - sm * (DEPTH - 4));
+      cam.rotation.set(-py * .05, -px * .07, Math.sin(t * .15) * .03 + sm * .6);
+      gates.forEach(g => { g.rotation.z = t * g.userData.spin; const d = cam.position.z - g.position.z;
+        const o = Math.min(1, Math.max(0, (d - 1.5) / 6)) * Math.min(1, Math.max(0, 1 - (d - 30) / 30));
+        g.children.forEach(m => { m.material.opacity = (m.userData.o ?? (m.userData.o = m.material.opacity)) * o; }); });
+      dust.rotation.z = t * .01;
+      thm.uniforms.uTime.value = t;
+      R3.render(scene, cam);
+      requestAnimationFrame(loop);
+    })(t0);
+  }
+
+  // ===== 3D-Karten: kippen beim Reinscrollen + neigen sich mit Maus =====
+  document.documentElement.classList.add("js3d");
+  const els = document.querySelectorAll(".card, .prices, .tb-step, .info, .contact .photo, section h2, .note, .book .btn");
+  els.forEach(el => el.classList.add("r3d"));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold:.12 });
+  els.forEach(el => io.observe(el));
+  setTimeout(() => els.forEach(el => el.classList.add("in")), 6000);   // Sicherheit: alles sichtbar
+  if (matchMedia("(hover:hover)").matches) document.querySelectorAll(".card, .prices, .info").forEach(el => {
+    el.addEventListener("pointermove", e => { const b = el.getBoundingClientRect(), x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+      el.style.setProperty("--mx", x * 100 + "%"); el.style.setProperty("--my", y * 100 + "%");
+      const k = el.classList.contains("prices") ? 2.5 : 9;
+      el.classList.add("tilt"); el.style.transform = `perspective(900px) rotateX(${(.5 - y) * k}deg) rotateY(${(x - .5) * k}deg) translateZ(6px)`; });
+    el.addEventListener("pointerleave", () => { el.style.transform = ""; el.classList.remove("tilt"); });
+  });
+}
+</script>
+
+<script>
+{
+  // ===== Preise schicken goldene Daten-Pakete hoch zum Logo =====
+  const cv = document.getElementById("data3d"), g = cv.getContext("2d");
+  const logo = document.querySelector(".nav img"), sec = document.getElementById("preise");
+  const rows = [...sec.querySelectorAll("a.row")];
+  let W, H, dpr, on = false, last = 0, hitT = 0;
+  const packs = [], bursts = [], bits = [];
+  function size(){ dpr = Math.min(devicePixelRatio, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  size(); addEventListener("resize", size);
+  new IntersectionObserver(e => on = e[0].isIntersecting, { threshold:0 }).observe(sec);
+  const bez = (p, t) => { const u = 1 - t; return [u*u*u*p[0] + 3*u*u*t*p[2] + 3*u*t*t*p[4] + t*t*t*p[6], u*u*u*p[1] + 3*u*u*t*p[3] + 3*u*t*t*p[5] + t*t*t*p[7]]; };
+  const target = () => { const b = logo.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; };
+  function spawn(now){
+    const vis = rows.filter(r => { const b = r.getBoundingClientRect(); return b.bottom > 70 && b.top < H - 40; });
+    if (!vis.length) return;
+    const row = vis[Math.random() * vis.length | 0], pr = row.querySelector("strong").getBoundingClientRect();
+    row.classList.add("send"); setTimeout(() => row.classList.remove("send"), 500);
+    const sx = Math.min(W - 10, pr.right + 10), sy = pr.top + pr.height * .3;
+    packs.push({ sx, sy, t0:now, dur:1300 + Math.random() * 700, bend:(Math.random() - .5) * 220, label:row.querySelector("strong").firstChild.textContent.trim() });
+  }
+  (function loop(now){
+    if (!on && !packs.length && !bursts.length && !bits.length) { requestAnimationFrame(loop); return; }
+    g.clearRect(0, 0, W, H);
+    if (on && now - last > 420) { last = now; spawn(now); }
+    const [ex, ey] = target();
+    for (let i = packs.length - 1; i >= 0; i--) {
+      const p = packs[i], t = (now - p.t0) / p.dur;
+      if (t >= 1) { packs.splice(i, 1); continue; }
+      const pts = [p.sx, p.sy, p.sx + 60 + p.bend * .4, p.sy - 120, ex + 80 + p.bend * .5, ey + Math.min(260, (p.sy - ey) * .5), ex, ey];
+      const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      // Schweif
+      g.lineCap = "round";
+      for (let k = 0; k < 16; k++) {
+        const a = bez(pts, Math.max(0, e - k * .012)), b2 = bez(pts, Math.max(0, e - (k + 1) * .012));
+        g.strokeStyle = `rgba(240,200,110,${(1 - k / 16) * .7})`; g.lineWidth = 2.6 * (1 - k / 16) + .4;
+        g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b2[0], b2[1]); g.stroke();
+      }
+      const [x, y] = bez(pts, e);
+      g.shadowColor = "rgba(255,210,110,1)"; g.shadowBlur = 14; g.fillStyle = "#fff4d0";
+      g.beginPath(); g.arc(x, y, 3.2, 0, 6.283); g.fill(); g.shadowBlur = 0;
+      // kleine Daten-Ziffern fallen ab
+      if (Math.random() < .15 && t > .2) bits.push({ x, y, t0:now, c:Math.random() < .5 ? "0" : "1" });
+    }
+    for (let i = bits.length - 1; i >= 0; i--) { const b = bits[i], a = 1 - (now - b.t0) / 700; if (a <= 0) { bits.splice(i, 1); continue; }
+      g.font = "600 9px Inter,sans-serif"; g.fillStyle = `rgba(226,184,102,${a * .8})`; g.fillText(b.c, b.x + 4, b.y + (1 - a) * 10); }
+    for (let i = bursts.length - 1; i >= 0; i--) { const b = bursts[i], k = (now - b.t0) / 600; if (k >= 1) { bursts.splice(i, 1); continue; }
+      g.strokeStyle = `rgba(255,214,120,${(1 - k) * .9})`; g.lineWidth = 2; g.beginPath(); g.arc(b.x, b.y, 8 + k * 34, 0, 6.283); g.stroke(); }
+    if (hitT && now - hitT > 260) { logo.classList.remove("hit"); hitT = 0; }
+    requestAnimationFrame(loop);
+  })(performance.now());
+}
+</script>
+</body>
+</html>
+
