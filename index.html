@@ -122,7 +122,8 @@
   main,footer{position:relative;z-index:1}
   section{border-top:1px solid rgba(255,255,255,.07)}
   .card,.prices,.info,.tb-step,.offer,.panel{background:rgba(18,16,13,.9);border-color:rgba(226,184,102,.16)}
-  .card,.prices,.info{position:relative;transform-style:preserve-3d;will-change:transform}
+  .card,.prices,.info{position:relative}
+  @media(hover:hover){.card,.prices,.info{transform-style:preserve-3d}}
   .card::after,.prices::after,.info::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(226,184,102,.13),transparent 60%)}
   .card:hover::after,.prices:hover::after,.info:hover::after{opacity:1}
   .card h3{transform:translateZ(30px)}
@@ -539,7 +540,7 @@
     if (!window.THREE) return flat();
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); } catch(e){ return flat(); }
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.6));
+    renderer.setPixelRatio(matchMedia("(pointer:coarse)").matches ? Math.min(devicePixelRatio, 1.3) : Math.min(devicePixelRatio, 1.6));
     stage.classList.add("gl");
 
     const scene = new THREE.Scene();
@@ -856,7 +857,8 @@
   let R3;
   try { if (!window.THREE) throw 0; R3 = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true }); } catch(e){ cv.style.display = "none"; }
   if (R3) {
-    R3.setPixelRatio(Math.min(devicePixelRatio, 1.1));
+    const TOUCH = matchMedia("(pointer:coarse)").matches;
+    R3.setPixelRatio(TOUCH ? 0.9 : Math.min(devicePixelRatio, 1.1));
     const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, 1, 0.1, 120); scene.add(cam);
     const ADD = { transparent:true, depthWrite:false, blending:THREE.AdditiveBlending };
     const GOLD = 0xe2b866;
@@ -895,15 +897,21 @@
     }, ADD));
     const threads = new THREE.LineSegments(thg, thm); threads.frustumCulled = false; cam.add(threads);
 
-    function size(){ const w = innerWidth, h = innerHeight; R3.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+    let lastW = 0, maxScroll = 1;
+    function size(){ const w = innerWidth, h = TOUCH ? Math.max(innerHeight, screen.height) : innerHeight;
+      if (TOUCH && w === lastW) return; lastW = w;                     // Safari-Leiste: nicht neu aufbauen
+      R3.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
     size(); addEventListener("resize", size);
+    const measure = () => { maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+    measure(); new ResizeObserver(measure).observe(document.body);
+    let odd = false;
     let px = 0, py = 0, tx = 0, ty = 0, sm = 0;
     addEventListener("pointermove", e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; }, { passive:true });
     const t0 = performance.now();
     (function loop(now){
       const t = (now - t0) / 1000;
-      const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
-      sm += (scrollY / max - sm) * 0.08;                         // weiches Scrollen
+      if (TOUCH && (odd = !odd)) { requestAnimationFrame(loop); return; }   // Handy: 30 Bilder/s für den Hintergrund
+      sm += (scrollY / maxScroll - sm) * (TOUCH ? 0.16 : 0.08);                         // weiches Scrollen
       px += (tx - px) * .05; py += (ty - py) * .05;
       cam.position.set(px * .6, -py * .4, 10 - sm * (DEPTH - 4));
       cam.rotation.set(-py * .05, -px * .07, Math.sin(t * .15) * .03 + sm * .6);
@@ -942,7 +950,7 @@
   const rows = [...sec.querySelectorAll("a.row")];
   let W, H, dpr, on = false, last = 0, hitT = 0;
   const packs = [], bursts = [], bits = [];
-  function size(){ dpr = Math.min(devicePixelRatio, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  let lw = 0; function size(){ if (innerWidth === lw && cv.height >= innerHeight) { H = innerHeight; return; } lw = innerWidth; dpr = Math.min(devicePixelRatio, 1.5); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = Math.max(innerHeight, screen.height) * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); }
   size(); addEventListener("resize", size);
   new IntersectionObserver(e => on = e[0].isIntersecting, { threshold:0 }).observe(sec);
   const bez = (p, t) => { const u = 1 - t; return [u*u*u*p[0] + 3*u*u*t*p[2] + 3*u*t*t*p[4] + t*t*t*p[6], u*u*u*p[1] + 3*u*u*t*p[3] + 3*u*t*t*p[5] + t*t*t*p[7]]; };
@@ -957,7 +965,7 @@
   }
   (function loop(now){
     if (!on && !packs.length && !bursts.length && !bits.length) { requestAnimationFrame(loop); return; }
-    g.clearRect(0, 0, W, H);
+    g.clearRect(0, 0, cv.width, cv.height);
     if (on && now - last > 420) { last = now; spawn(now); }
     const [ex, ey] = target();
     for (let i = packs.length - 1; i >= 0; i--) {
@@ -973,8 +981,8 @@
         g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b2[0], b2[1]); g.stroke();
       }
       const [x, y] = bez(pts, e);
-      g.shadowColor = "rgba(255,210,110,1)"; g.shadowBlur = 14; g.fillStyle = "#fff4d0";
-      g.beginPath(); g.arc(x, y, 3.2, 0, 6.283); g.fill(); g.shadowBlur = 0;
+      g.fillStyle = "rgba(255,210,110,.35)"; g.beginPath(); g.arc(x, y, 7, 0, 6.283); g.fill();
+      g.fillStyle = "#fff4d0"; g.beginPath(); g.arc(x, y, 3.2, 0, 6.283); g.fill();
       // kleine Daten-Ziffern fallen ab
       if (Math.random() < .15 && t > .2) bits.push({ x, y, t0:now, c:Math.random() < .5 ? "0" : "1" });
     }
