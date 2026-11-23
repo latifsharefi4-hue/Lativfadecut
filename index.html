@@ -194,6 +194,10 @@
   .closed .hero .cta{margin-top:52px}
   .closed #buchen .btn.soon{margin-top:46px}
   .closed #preise .prices{margin-top:62px}
+  /* ===== Logo fällt durch den Ring und landet auf dem Landeplatz ===== */
+  #logo3d.fly{position:fixed;inset:auto;left:0;top:0;width:100%;z-index:-1;pointer-events:none}
+  .dock{height:300px;position:relative}
+  @media(max-width:720px){.dock{height:250px}}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -234,6 +238,8 @@
       </div>
     </div>
   </div>
+
+  <div class="dock" id="dock" aria-hidden="true"></div>
 
   <section id="leistungen">
     <div class="wrap">
@@ -583,6 +589,8 @@
     if (!window.THREE) return flat();
     let renderer;
     try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); } catch(e){ return flat(); }
+    canvas.classList.add("fly"); document.querySelector("main").prepend(canvas);
+    const dockEl = document.getElementById("dock");
     renderer.setPixelRatio(matchMedia("(pointer:coarse)").matches ? Math.min(devicePixelRatio, 1.3) : Math.min(devicePixelRatio, 1.6));
     stage.classList.add("gl");
 
@@ -793,18 +801,58 @@
     const waves = [0, 1, 2].map(() => { const w = ring(1, 0.02, 0); w.userData.op = 0; hud.add(w); return w; });
     const shock = ring(1, 0.08, 0); hud.add(shock);
 
-    let W = 0, H = 0, lift = 0;
+    // ===== Landeplatz + Daten, die nach oben steigen =====
+    const dockG = new THREE.Group(); scene.add(dockG);
+    const pad = new THREE.Group(); pad.rotation.x = -1.22; dockG.add(pad);
+    const padRings = [ring(2.05, 0.07, .85), ring(2.45, 0.02, .45), ring(1.6, 0.015, .35)];
+    padRings.forEach(m => pad.add(m));
+    const padTicks = ticks(2.2, 72, 0.08, 0.18, .5); pad.add(padTicks);
+    const padGlow = add(new THREE.Sprite(core.material.clone())); padGlow.scale.set(5.5, 2.2, 1); dockG.add(padGlow);
+    const landShock = ring(1, 0.09, 0); pad.add(landShock);
+    const upWaves = [0, 1, 2].map(() => { const w = ring(1.6, 0.03, 0); w.userData.op = .45; const g = new THREE.Group(); g.rotation.x = -1.22; g.add(w); dockG.add(g); return g; });
+    // Fäden nach oben (Pulse laufen aufwärts)
+    const UN = 70, US = 40, up = [], ua = [], us = [], ui = [];
+    for (let i = 0; i < UN; i++) { const sg = Math.random() < .5 ? -1 : 1, x = sg * Math.pow(Math.random(), 1.2) * 4.2, sd = Math.random();
+      for (let j = 0; j <= US; j++) { up.push(x, 0, (Math.random() - .5) * 0.2); ua.push(j / US); us.push(sd); if (j) ui.push(i * (US + 1) + j - 1, i * (US + 1) + j); } }
+    const ug = new THREE.BufferGeometry(); ug.setAttribute("position", new THREE.Float32BufferAttribute(up, 3));
+    ug.setAttribute("aT", new THREE.Float32BufferAttribute(ua, 1)); ug.setAttribute("aSeed", new THREE.Float32BufferAttribute(us, 1)); ug.setIndex(ui);
+    const upMat = new THREE.ShaderMaterial({
+      uniforms:{ uTime:{ value:0 }, uLen:{ value:8 }, uA:{ value:0 } },
+      vertexShader:`uniform float uTime, uLen; attribute float aT; attribute float aSeed; varying float vT; varying float vS;
+        void main(){ vec3 p = position; float y = aT * uLen * (0.55 + aSeed * 0.45);
+          p.x = p.x * (0.18 + 0.82 * aT) + sin(y * .7 - uTime * 1.2 + aSeed * 9.) * .12 * aT;
+          p.y = y; vT = aT; vS = aSeed; gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.); }`,
+      fragmentShader:`uniform float uTime, uA; varying float vT; varying float vS;
+        void main(){ float g = fract(vT * (2.2 + vS * 1.5) - uTime * (.35 + vS * .4) + vS * 5.); float d = pow(g, 4.);
+          float fade = smoothstep(0., .06, vT) * (1. - smoothstep(.55, 1., vT));
+          float a = (.12 + d * 1.) * fade * (.45 + vS * .55) * uA;
+          gl_FragColor = vec4(mix(vec3(.78,.56,.22), vec3(1.,.9,.65), d) * a, a); }`,
+      transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+    });
+    const upThreads = new THREE.LineSegments(ug, upMat); upThreads.frustumCulled = false; dockG.add(upThreads);
+    // Daten-Teilchen steigen auf
+    const BP = 160, bp = new Float32Array(BP * 3), bo = [];
+    for (let i = 0; i < BP; i++) bo.push({ x:(Math.random() - .5) * 3, y:Math.random(), v:.12 + Math.random() * .3, w:Math.random() * 6 });
+    const bg2 = new THREE.BufferGeometry(); bg2.setAttribute("position", new THREE.BufferAttribute(bp, 3));
+    const bits = add(new THREE.Points(bg2, new THREE.PointsMaterial({ color:HOT, size:0.06, opacity:0 }))); bits.frustumCulled = false; dockG.add(bits);
+
+    let W = 0, H = 0, lift = 0, ppw = 60, startPx = 300, lastW = 0, wasDocked = false, landT = -9, cleared = false;
+    const TOUCH = matchMedia("(pointer:coarse)").matches;
+    const toY = (py) => (H / 2 - py) / ppw;
     function size(){
-      W = stage.clientWidth; H = stage.clientHeight;
-      renderer.setSize(W, H, false); camera.aspect = W / H;
+      const Hn = TOUCH ? Math.max(innerHeight, screen.height) : innerHeight;
+      if (!(TOUCH && innerWidth === lastW && H)) { W = innerWidth; H = Hn; lastW = W;
+        renderer.setSize(W, H, false); canvas.style.height = H + "px"; camera.aspect = W / H; }
+      const sH = stage.clientHeight;
       const copyH = stage.querySelector(".copy").offsetHeight + parseFloat(getComputedStyle(stage).paddingBottom);
-      const free = Math.max(0.35, (H - copyH - 20) / H);             // Anteil über dem Text
+      const free = Math.max(0.35 * sH, sH - copyH - 20);              // Platz über dem Text (px)
+      ppw = Math.min(free * 0.98 / 6.1, W * 0.96 / 5.0);               // Pixel pro 3D-Einheit
       const tan = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-      const dist = Math.max(6.1 / (free * 0.98), 5.0 / (0.96 * camera.aspect)) / (2 * tan);
-      camera.position.set(0, 0, dist); camera.updateProjectionMatrix();
-      const visH = 2 * dist * tan; lift = visH / 2 - visH * free / 2;
+      camera.position.set(0, 0, (H / ppw) / (2 * tan)); camera.updateProjectionMatrix();
+      startPx = 64 + free / 2;
+      upMat.uniforms.uLen.value = H / ppw * 0.85;
     }
-    size(); new ResizeObserver(size).observe(stage);
+    size(); new ResizeObserver(size).observe(stage); addEventListener("resize", size);
 
     let mx = 0, my = 0, tx = 0, ty = 0;
     addEventListener("pointermove", e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; }, { passive:true });
@@ -814,28 +862,33 @@
     const back = (x) => { const c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
     function frame(now){
       const time = (now - t0) / 1000;
-      const r = hero.getBoundingClientRect();
-      const s = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - H)));
-      const burst = s < 0.6 ? 0 : (s - 0.6) / 0.4;
+      const dr = dockEl.getBoundingClientRect();
+      const dockPx = dr.top + dr.height * 0.42;
+      const D = Math.max(1, dr.top + scrollY + dr.height * 0.42 - innerHeight * 0.6);
+      const f = clamp(scrollY / D);                    // 0 = oben, 1 = gelandet
+      const e = f * f * (3 - 2 * f);                    // weich fallen
+      const s = 0;
 
       // 1) Kern lädt auf (0–1.3 s)  2) Logo knallt rein (1.3 s)  3) HUD läuft
       const charge = clamp(time / 1.3), slam = clamp((time - 1.25) / 0.45), hit = time - 1.45;
       const hudIn = clamp((time - 0.2) / 1.2);
       group.visible = time > 1.25;
       const sc = 0.15 + 0.85 * back(slam);
-      group.scale.setScalar(sc);
+      const DOCK_S = 0.52;
+      group.scale.setScalar(sc * (1 + (DOCK_S - 1) * e));
       mats.forEach(m => { m.uniforms.uP.value = 1; m.uniforms.uTime.value = time; m.uniforms.uRot.value.set(group.rotation.x, group.rotation.y); });
       sparkMat.uniforms.uTime.value = time;
 
       mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
-      group.rotation.y = mx * 0.4 + Math.sin(time * 0.6) * 0.1 + s * 0.6;
-      group.rotation.x = my * 0.2 + s * 0.15;
-      group.position.y = lift - s * 0.4;
+      group.rotation.y = mx * 0.4 + Math.sin(time * 0.6) * 0.1 + e * Math.PI * 2;   // eine Drehung im Fall
+      group.rotation.x = my * 0.2 + Math.sin(e * Math.PI) * 0.55;
+      group.position.y = toY(startPx + (dockPx - startPx) * e);
 
-      hud.position.y = lift - s * 0.4;
-      hud.rotation.y = mx * 0.18 + s * 0.5; hud.rotation.x = my * 0.12;
-      hud.scale.setScalar(0.88 * (0.55 + 0.45 * (1 - Math.pow(1 - hudIn, 3))) * (1 + s * 0.25));
-      const fadeS = 1 - s * 0.55;
+      // Der Jarvis-Ring bleibt oben, öffnet sich wie ein Loch und verblasst, wenn das Logo durchfällt
+      hud.position.y = toY(startPx);
+      hud.rotation.y = mx * 0.18; hud.rotation.x = my * 0.12;
+      hud.scale.setScalar(0.88 * (0.55 + 0.45 * (1 - Math.pow(1 - hudIn, 3))) * (1 + e * 0.5));
+      const fadeS = 1 - clamp(f / 0.4);
       R.outer.rotation.z = time * 0.05;  R.dash.rotation.z = -time * 0.12;
       R.tick.rotation.z = time * 0.18;   R.arcs.rotation.z = -time * 0.45 + Math.sin(time * 0.9) * 0.3;
       R.thin.rotation.z = time * 0.3;    R.inner.rotation.z = time * 0.8;
@@ -862,10 +915,31 @@
       waves.forEach((w, i) => { const ph = ((time - 2 + i) % 3) / 3; const on = time > 2 + i;
         w.scale.setScalar(2.2 + ph * 2.4); w.material.opacity = on ? (1 - ph) * 0.35 * fadeS : 0; });
 
+      // ===== Landeplatz: Landung + Daten nach oben =====
+      dockG.position.y = toY(dockPx);
+      pad.position.y = -LH * DOCK_S * 0.5 - 0.15;
+      const docked = f >= 0.995;
+      if (docked && !wasDocked && time > 1.5) landT = time;
+      wasDocked = docked;
+      const land = clamp((f - 0.9) / 0.1), lt = time - landT;
+      padRings.forEach(m => m.material.opacity = m.userData.op * (0.35 + 0.65 * land));
+      padTicks.material.opacity = padTicks.userData.op * (0.35 + 0.65 * land);
+      pad.rotation.z = time * 0.25;
+      padGlow.position.y = pad.position.y; padGlow.material.opacity = 0.35 + 0.35 * land;
+      if (lt >= 0 && lt < 1) { landShock.visible = true; landShock.scale.setScalar(2 + lt * 3); landShock.material.opacity = (1 - lt) * 0.9; } else landShock.visible = false;
+      upMat.uniforms.uTime.value = time; upMat.uniforms.uA.value = land;
+      upThreads.position.y = pad.position.y;
+      upWaves.forEach((g, i) => { const ph = ((time + i) % 3) / 3;
+        g.position.y = pad.position.y + ph * 4.5; g.scale.setScalar(1 + ph * 1.8); g.children[0].material.opacity = (1 - ph) * 0.4 * land; });
+      for (let i = 0; i < BP; i++) { const o = bo[i]; o.y += o.v * 0.016 / 4; if (o.y > 1) { o.y = 0; o.x = (Math.random() - .5) * 3; }
+        bp[i * 3] = o.x * (0.4 + o.y * 1.6) + Math.sin(time + o.w) * 0.1; bp[i * 3 + 1] = pad.position.y + o.y * upMat.uniforms.uLen.value * 0.8; bp[i * 3 + 2] = 0.1; }
+      bg2.attributes.position.needsUpdate = true; bits.material.opacity = 0.8 * land;
+
       threadMat.uniforms.uTime.value = time;
-      threads.position.y = lift; threads.rotation.y = mx * 0.06;
-      dust.rotation.y = time * 0.02; dust.position.y = Math.sin(time * 0.3) * 0.1;
-      if (r.bottom > 0) renderer.render(scene, camera);
+      dust.rotation.y = time * 0.02;
+      const show = dr.bottom > -40 || f < 1;
+      if (show) { renderer.render(scene, camera); cleared = false; }
+      else if (!cleared) { renderer.clear(); cleared = true; }
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
@@ -875,7 +949,7 @@
   function flat(){
     stage.classList.remove("gl"); stage.classList.add("flat");
     const c2 = document.createElement("canvas"); c2.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
-    canvas.replaceWith(c2); const g = c2.getContext("2d"); if (!g) return;
+    canvas.remove(); stage.prepend(c2); const g = c2.getContext("2d"); if (!g) return;
     const T = []; for (let i = 0; i < 120; i++) { const s = Math.random() < .5 ? -1 : 1; T.push({ x:.5 + s * Math.pow(Math.random(), 1.25) * .5, k:Math.random() }); }
     (function loop(now){
       const w = c2.width = stage.clientWidth * Math.min(devicePixelRatio, 2), h = c2.height = stage.clientHeight * Math.min(devicePixelRatio, 2), t = now / 1000;
