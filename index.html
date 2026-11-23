@@ -349,24 +349,23 @@
     <div class="wrap">
       <div class="eyebrow">Termin-Börse</div>
       <h2>Termin abgeben oder übernehmen</h2>
-      <p class="tb-intro">Du kannst deinen Termin nicht wahrnehmen? Tausch ihn einfach mit jemandem, der keinen Termin hat – kostenlos. Alles ausgebucht? Hier findest du Termine, die andere Kunden abgeben.</p>
+      <p class="tb-intro">Du kannst deinen Termin nicht wahrnehmen? Trag ihn hier ein, statt abzusagen. Alles ausgebucht? Dann übernimm einen Termin, den ein anderer Kunde abgibt – kostenlos.</p>
 
       <div class="tb-steps">
-        <div class="tb-step"><b>1. Eintragen</b>Datum, Uhrzeit und Leistung deines Termins angeben.</div>
-        <div class="tb-step"><b>2. Jemand übernimmt</b>Ein anderer Kunde tippt auf „Übernehmen“ und meldet sich bei dir.</div>
-        <div class="tb-step"><b>3. Fertig</b>Keiner muss absagen – Lativ weiß Bescheid, wer kommt.</div>
+        <div class="tb-step"><b>1. Abgeben</b>Datum, Uhrzeit und Leistung deines Termins eintragen. Kein Name, keine Nummer nötig.</div>
+        <div class="tb-step"><b>2. Übernehmen</b>Wer den Termin will, tippt auf „Termin übernehmen“ und schreibt Lativ per WhatsApp.</div>
+        <div class="tb-step"><b>3. Fertig</b>Lativ trägt den neuen Kunden ein – keiner muss absagen.</div>
       </div>
 
       <div id="tbClosed" class="empty hidden">Die Termin-Börse startet in Kürze.</div>
 
       <div id="tbOpen">
-        <button class="btn btn-gold" id="btnAbgeben">+ Meinen Termin abgeben</button>
+        <button class="btn btn-gold" id="btnAbgeben">Meinen Termin abgeben</button>
 
         <div class="panel hidden" id="formAbgeben">
           <div style="font-family:Cinzel,serif;font-size:1.2rem">Termin abgeben</div>
-          <label class="field">Dein Vorname<input id="aName" maxlength="30" autocomplete="given-name"></label>
           <label class="field">Datum<input id="aDate" type="date"></label>
-          <label class="field">Uhrzeit<input id="aTime" type="time" step="900"></label>
+          <label class="field">Uhrzeit<input id="aTime" type="time" step="300"></label>
           <label class="field">Leistung
             <select id="aService">
               <option>Haarschnitt + Styling</option>
@@ -387,11 +386,11 @@
               <option>Augenbrauen mit Faden</option>
             </select>
           </label>
-          <label class="field">Deine Handynummer (sieht nur, wer übernimmt, und Lativ)<input id="aPhone" type="tel" maxlength="25" autocomplete="tel" placeholder="0176 …"></label>
           <input id="aWeb" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <p class="what" style="margin-top:12px">Es wird nur Datum, Uhrzeit und Leistung angezeigt. Lativ sieht in seinem Kalender, wessen Termin es ist.</p>
           <div class="err" id="aErr"></div>
           <div class="actions">
-            <button class="btn btn-gold btn-sm" id="aSend">Veröffentlichen</button>
+            <button class="btn btn-gold btn-sm" id="aSend">Eintragen</button>
             <button class="btn btn-ghost btn-sm" id="aCancel">Abbrechen</button>
           </div>
         </div>
@@ -533,112 +532,81 @@
   // ================= TERMIN-BÖRSE =================
   // Web-App-URL aus Google Apps Script hier eintragen:
   var API_URL = "";
+  var WA = "4917674746361";   // WhatsApp von Lativ
 
   var DAYS = ["So","Mo","Di","Mi","Do","Fr","Sa"];
-  var offers = [], openId = null;
+  var offers = [], PIN = "";
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
   function fmt(o){ var x=new Date(o.datum+"T12:00"); return DAYS[x.getDay()]+" "+x.getDate()+"."+(x.getMonth()+1)+". – "+o.uhrzeit+" Uhr"; }
-  function waLink(tel, text){
-    var d = String(tel).replace(/\D/g,"");
-    if (d.indexOf("00") === 0) d = d.slice(2); else if (d.indexOf("0") === 0) d = "49" + d.slice(1);
-    return "https://wa.me/" + d + "?text=" + encodeURIComponent(text);
-  }
   function msg(html){ $("tbMsg").innerHTML = html ? '<div class="panel">'+html+'</div>' : ""; }
-
   function api(method, params, body){
     var url = API_URL + (params ? "?" + new URLSearchParams(params).toString() : "");
-    var opt = method === "POST" ? { method:"POST", body: JSON.stringify(body) } : {};
+    var opt = method === "POST" ? { method:"POST", body: JSON.stringify(body) } : { cache:"no-store" };
     return fetch(url, opt).then(function(r){ return r.json(); });
+  }
+  function waText(o){
+    return "https://wa.me/" + WA + "?text=" + encodeURIComponent("Hallo Lativ, ich möchte einen Termin aus der Termin-Börse übernehmen: " + fmt(o) + " (" + o.leistung + "). Mein Name: ");
   }
 
   function load(){
-    return api("GET").then(function(res){
-      offers = res.ok ? res.offers : [];
-      render();
-    }).catch(function(){
-      $("offers").innerHTML = '<div class="empty">Die Börse ist gerade nicht erreichbar. Bitte später nochmal versuchen.</div>';
-    });
+    return api("GET").then(function(res){ offers = res.ok ? res.offers : []; render(); })
+      .catch(function(){ $("offers").innerHTML = '<div class="empty">Die Börse ist gerade nicht erreichbar. Bitte später nochmal versuchen.</div>'; });
   }
-
   function render(){
-    var list = offers.slice().sort(function(a,b){ return (a.vergeben?1:0)-(b.vergeben?1:0) || (a.datum+a.uhrzeit).localeCompare(b.datum+b.uhrzeit); });
+    var list = offers.filter(function(o){ return !o.vergeben; })
+      .sort(function(a,b){ return (a.datum+a.uhrzeit).localeCompare(b.datum+b.uhrzeit); });
     if (!list.length){ $("offers").innerHTML = '<div class="empty">Gerade keine Termine in der Börse.</div>'; return; }
     $("offers").innerHTML = list.map(function(o){
-      var pill = '<span class="pill free">Tausch</span>';
-      var body;
-      if (o.vergeben) body = '<div class="what">✓ Vergeben</div>';
-      else if (openId === o.id) body =
-        '<label class="field">Dein Name<input id="tName" maxlength="40" autocomplete="name"></label>'+
-        '<label class="field">Deine Handynummer<input id="tPhone" type="tel" maxlength="25" autocomplete="tel"></label>'+
-        '<div class="err" id="tErr"></div>'+
-        '<div class="actions"><button class="btn btn-gold btn-sm" data-confirm="'+esc(o.id)+'">Termin übernehmen</button><button class="btn btn-ghost btn-sm" data-cancel="1">Abbrechen</button></div>';
-      else body = '<div class="actions" style="margin-top:4px"><button class="btn btn-gold btn-sm" data-take="'+esc(o.id)+'">Übernehmen</button></div>';
-      return '<div class="offer'+(o.vergeben?' taken':'')+'"><div class="top"><div><div class="when">'+esc(fmt(o))+'</div><div class="what">'+esc(o.leistung)+' · abgegeben von '+esc(o.vorname)+'</div></div>'+pill+'</div>'+body+'</div>';
+      return '<div class="offer"><div class="top"><div><div class="when">'+esc(fmt(o))+'</div><div class="what">'+esc(o.leistung)+'</div></div><span class="pill free">Frei</span></div>'+
+        '<div class="actions" style="margin-top:4px"><a class="btn btn-gold btn-sm" href="'+esc(waText(o))+'" target="_blank" rel="noopener">Termin übernehmen</a></div></div>';
     }).join("");
   }
 
-  $("offers").addEventListener("click", function(e){
-    var b = e.target.closest("button"); if (!b) return;
-    if (b.dataset.take){ openId = b.dataset.take; render(); var i=$("tName"); if(i) i.focus(); return; }
-    if (b.dataset.cancel){ openId = null; render(); return; }
-    if (b.dataset.confirm){
-      var n = $("tName").value.trim(), p = $("tPhone").value.trim();
-      if (!n || p.replace(/\D/g,"").length < 6){ $("tErr").textContent = "Bitte Name und Handynummer eingeben."; return; }
-      var o = offers.find(function(x){ return x.id == b.dataset.confirm; });
-      b.disabled = true; b.textContent = "Moment …";
-      api("POST", null, { action:"take", id:o.id, name:n, telefon:p }).then(function(res){
-        if (!res.ok){
-          $("tErr").textContent = res.error === "vergeben" ? "Zu spät – der Termin wurde gerade vergeben." : "Das hat nicht geklappt. Bitte nochmal versuchen.";
-          b.disabled = false; b.textContent = "Termin übernehmen"; if (res.error === "vergeben") load(); return;
-        }
-        openId = null;
-        var text = "Hi " + res.vorname + ", ich habe deinen Termin bei Lativ Fade Cut übernommen (" + fmt(o) + ", " + o.leistung + "). Ich bin " + n + ".";
-        msg('<b>✓ Termin übernommen!</b><br><span class="what">Melde dich jetzt bei '+esc(res.vorname)+'. Lativ weiß schon Bescheid, dass du kommst.</span>'+
-            '<div class="actions"><a class="btn btn-gold btn-sm" href="'+esc(waLink(res.telefon, text))+'" target="_blank" rel="noopener">WhatsApp an '+esc(res.vorname)+'</a></div>'+
-            '<div class="what" style="margin-top:8px">Nummer: '+esc(res.telefon)+'</div>');
-        load();
-        $("tbMsg").scrollIntoView({behavior:"smooth", block:"center"});
-      }).catch(function(){ $("tErr").textContent = "Keine Verbindung. Bitte nochmal versuchen."; b.disabled = false; b.textContent = "Termin übernehmen"; });
-    }
-  });
-
   var fA = $("formAbgeben"), bA = $("btnAbgeben");
-  bA.onclick = function(){ fA.classList.remove("hidden"); bA.classList.add("hidden"); msg(""); $("aName").focus(); };
+  bA.onclick = function(){ fA.classList.remove("hidden"); bA.classList.add("hidden"); msg(""); $("aDate").focus(); };
   $("aCancel").onclick = function(){ fA.classList.add("hidden"); bA.classList.remove("hidden"); $("aErr").textContent=""; };
   $("aDate").min = new Date().toISOString().slice(0,10);
-  ["aName","aDate","aTime","aPhone"].forEach(function(id){ $(id).addEventListener("input",function(){ $("aErr").textContent=""; }); });
+  ["aDate","aTime"].forEach(function(id){ $(id).addEventListener("input",function(){ $("aErr").textContent=""; }); });
   $("aSend").onclick = function(){
-    var b = this, n=$("aName").value.trim(), dt=$("aDate").value, tm=$("aTime").value, ph=$("aPhone").value.trim();
-    if (!n || !dt || !tm || ph.replace(/\D/g,"").length < 6){ $("aErr").textContent = "Bitte alle Felder ausfüllen."; return; }
+    var b = this, dt=$("aDate").value, tm=$("aTime").value;
+    if (!dt || !tm){ $("aErr").textContent = "Bitte Datum und Uhrzeit angeben."; return; }
     b.disabled = true; b.textContent = "Moment …";
-    api("POST", null, { action:"create", vorname:n, datum:dt, uhrzeit:tm, leistung:$("aService").value, telefon:ph, website:$("aWeb").value })
+    api("POST", null, { action:"create", datum:dt, uhrzeit:tm, leistung:$("aService").value, website:$("aWeb").value })
       .then(function(res){
-        b.disabled = false; b.textContent = "Veröffentlichen";
-        if (!res.ok){ $("aErr").textContent = res.error === "datum" ? "Das Datum liegt in der Vergangenheit." : res.error === "voll" ? "Die Börse ist gerade voll. Bitte später nochmal versuchen." : "Bitte prüfe deine Angaben."; return; }
-        $("aName").value = $("aDate").value = $("aTime").value = $("aPhone").value = "";
+        b.disabled = false; b.textContent = "Eintragen";
+        if (!res.ok){ $("aErr").textContent = res.error === "datum" ? "Das Datum liegt in der Vergangenheit." : res.error === "doppelt" ? "Dieser Termin steht schon in der Börse." : res.error === "voll" ? "Die Börse ist gerade voll. Bitte später nochmal versuchen." : "Bitte prüfe deine Angaben."; return; }
+        $("aDate").value = $("aTime").value = "";
         $("aCancel").click();
-        msg('<b>✓ Dein Termin steht in der Börse.</b><br><span class="what">Wenn ihn jemand übernimmt, meldet er sich per WhatsApp oder Anruf bei dir.</span>');
+        msg('<b>✓ Dein Termin steht in der Börse.</b><br><span class="what">Sobald ihn jemand übernehmen will, meldet sich Lativ bei dir. Bis dahin gilt dein Termin weiter.</span>');
         load();
-      }).catch(function(){ b.disabled = false; b.textContent = "Veröffentlichen"; $("aErr").textContent = "Keine Verbindung. Bitte nochmal versuchen."; });
+      }).catch(function(){ b.disabled = false; b.textContent = "Eintragen"; $("aErr").textContent = "Keine Verbindung. Bitte nochmal versuchen."; });
   };
 
+  // ----- Bereich für Lativ -----
+  function adminLoad(){
+    return api("GET", { action:"admin", pin:PIN }).then(function(res){
+      if (!res.ok){ $("pinErr").textContent = "Falscher PIN."; return false; }
+      $("adminLogin").classList.add("hidden"); $("adminView").classList.remove("hidden");
+      $("log").innerHTML = res.rows.length ? res.rows.map(function(r){
+        return '<div class="logrow"><b>'+esc(fmt(r))+'</b> · '+esc(r.leistung)+'<small>'+(r.status === "vergeben" ? "✓ vergeben" : "offen")+'</small>'+
+          '<div class="actions" style="margin-top:8px">'+(r.status === "vergeben" ? "" : '<button class="btn btn-gold btn-sm" data-mark="'+esc(r.id)+'">Als vergeben markieren</button>')+
+          '<button class="btn btn-ghost btn-sm" data-del="'+esc(r.id)+'">Löschen</button></div></div>';
+      }).join("") : '<div class="what">Noch keine Einträge.</div>';
+      return true;
+    });
+  }
   $("btnAdmin").onclick = function(){ $("adminLogin").classList.toggle("hidden"); };
   $("pinOk").onclick = function(){
     if (!API_URL) { $("pinErr").textContent = "Die Börse ist noch nicht verbunden."; return; }
-    api("GET", { action:"admin", pin:$("pin").value }).then(function(res){
-      if (!res.ok){ $("pinErr").textContent = "Falscher PIN."; return; }
-      $("adminLogin").classList.add("hidden"); $("adminView").classList.remove("hidden");
-      $("btnAdmin").textContent = "Bereich für Lativ (offen)";
-      $("log").innerHTML = res.rows.length ? res.rows.map(function(r){
-        var head = r.status === "vergeben"
-          ? '<b>'+esc(r.vorname)+'</b> → <b>'+esc(r.uebernommen_von)+'</b>'
-          : '<b>'+esc(r.vorname)+'</b> · noch offen';
-        var tel = 'Abgeber: '+esc(r.telefon_abgeber) + (r.status === "vergeben" ? ' · Übernehmer: '+esc(r.telefon_uebernehmer) : '');
-        return '<div class="logrow">'+head+'<small>'+esc(fmt(r))+' · '+esc(r.leistung)+'</small><small>'+tel+'</small></div>';
-      }).join("") : '<div class="what">Noch keine Einträge.</div>';
-    }).catch(function(){ $("pinErr").textContent = "Keine Verbindung."; });
+    PIN = $("pin").value; adminLoad().catch(function(){ $("pinErr").textContent = "Keine Verbindung."; });
   };
+  $("log").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if (!b) return;
+    var action = b.dataset.mark ? "mark" : b.dataset.del ? "delete" : ""; if (!action) return;
+    b.disabled = true;
+    api("POST", null, { action:action, id:b.dataset.mark || b.dataset.del, pin:PIN }).then(function(){ adminLoad(); load(); });
+  });
 
   if (!API_URL){ $("tbOpen").classList.add("hidden"); $("tbClosed").classList.remove("hidden"); }
   else load();
@@ -1144,7 +1112,7 @@
   let mine = null; try { mine = localStorage.getItem("lfc-bewertung"); } catch(e) {}
   for (let n = 1; n <= 10; n++) scale.insertAdjacentHTML("beforeend", '<button type="button" data-n="' + n + '" aria-label="' + n + ' von 10">' + n + '</button>');
   const get = n => fetch(API + "get/" + KEY(n)).then(r => r.ok ? r.json() : { value:0 }).then(d => +d.value || 0).catch(() => 0);
-  function show(counts){
+  function showVotes(counts){
     const total = counts.reduce((a, b) => a + b, 0);
     if (!total) { result.textContent = mine ? "Danke für deine Bewertung!" : "Sei der Erste, der bewertet."; return; }
     const avg = counts.reduce((a, c, i) => a + c * (i + 1), 0) / total;
@@ -1154,17 +1122,17 @@
     bars.innerHTML = counts.map(c => '<i style="height:' + Math.max(3, c / mx * 100) + '%"></i>').join("");
     bars.classList.remove("hidden");
   }
-  function load(){ return Promise.all([1,2,3,4,5,6,7,8,9,10].map(get)).then(show); }
-  function lock(){ scale.classList.add("done"); scale.querySelectorAll("button").forEach(b => { b.disabled = true; if (b.dataset.n === mine) b.classList.add("mine"); }); }
-  if (mine) lock();
+  function loadVotes(){ return Promise.all([1,2,3,4,5,6,7,8,9,10].map(get)).then(showVotes); }
+  function lockVotes(){ scale.classList.add("done"); scale.querySelectorAll("button").forEach(b => { b.disabled = true; if (b.dataset.n === mine) b.classList.add("mine"); }); }
+  if (mine) lockVotes();
   scale.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b || mine) return;
     mine = b.dataset.n; try { localStorage.setItem("lfc-bewertung", mine); } catch(err) {}
-    lock(); result.textContent = "Wird gespeichert …";
-    fetch(API + "hit/" + KEY(mine)).catch(() => {}).then(load);
+    lockVotes(); result.textContent = "Wird gespeichert …";
+    fetch(API + "hit/" + KEY(mine)).catch(() => {}).then(loadVotes);
   });
   // Ergebnisse laden, sobald man den Bereich erreicht
-  new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); load(); } }).observe(scale);
+  new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); loadVotes(); } }).observe(scale);
 }
 </script>
 
