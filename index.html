@@ -836,6 +836,18 @@
     const bg2 = new THREE.BufferGeometry(); bg2.setAttribute("position", new THREE.BufferAttribute(bp, 3));
     const bits = add(new THREE.Points(bg2, new THREE.PointsMaterial({ color:HOT, size:0.06, opacity:0 }))); bits.frustumCulled = false; dockG.add(bits);
 
+    // Ring-Tunnel, durch den das Logo beim Scrollen immer tiefer fliegt
+    const tunnel = new THREE.Group(); scene.add(tunnel); const tRings = [];
+    for (let i = 0; i < 10; i++) {
+      const g = new THREE.Group(), r0 = 2.6 + (i % 2) * 0.35;
+      g.add(ring(r0, 0.035, .5)); g.add(ticks(r0 - 0.15, 60, 0.07, 0.16, .35));
+      [0.3, 2.4, 4.3].forEach((a, k) => g.add(ring(r0 + 0.22, 0.06, .55, a + i * .7, .5 + k * .3)));
+      g.position.z = -3 - i * 3.2; g.userData.spin = (i % 2 ? 1 : -1) * (0.1 + i * 0.015);
+      tunnel.add(g); tRings.push(g);
+    }
+    let sY = scrollY, maxS = 1;
+    const measureS = () => { maxS = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+    measureS(); new ResizeObserver(measureS).observe(document.body);
     let W = 0, H = 0, lift = 0, ppw = 60, startPx = 300, lastW = 0, wasDocked = false, landT = -9, cleared = false;
     const TOUCH = matchMedia("(pointer:coarse)").matches;
     const toY = (py) => (H / 2 - py) / ppw;
@@ -862,11 +874,15 @@
     const back = (x) => { const c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
     function frame(now){
       const time = (now - t0) / 1000;
+      sY += (scrollY - sY) * 0.12;                      // weich mitlaufen, kein Springen
       const dr = dockEl.getBoundingClientRect();
-      const dockPx = dr.top + dr.height * 0.42;
-      const D = Math.max(1, dr.top + scrollY + dr.height * 0.42 - innerHeight * 0.6);
-      const f = clamp(scrollY / D);                    // 0 = oben, 1 = gelandet
-      const e = f * f * (3 - 2 * f);                    // weich fallen
+      const restPx = innerHeight * 0.55;                // hier bleibt das Logo im Bild
+      const D = Math.max(1, dr.top + scrollY + dr.height * 0.42 - restPx);
+      const f = clamp(sY / D);                          // 0 = oben, 1 = gelandet
+      const e = f * f * (3 - 2 * f);
+      const k = clamp((sY - D) / Math.max(1, maxS - D)); // 0 = gelandet, 1 = Ende der Seite
+      const depth = k * 30;                             // immer tiefer in die Ringe
+      const dockPx = restPx;
       const s = 0;
 
       // 1) Kern lädt auf (0–1.3 s)  2) Logo knallt rein (1.3 s)  3) HUD läuft
@@ -874,15 +890,16 @@
       const hudIn = clamp((time - 0.2) / 1.2);
       group.visible = time > 1.25;
       const sc = 0.15 + 0.85 * back(slam);
-      const DOCK_S = 0.52;
+      const DOCK_S = 0.62;
       group.scale.setScalar(sc * (1 + (DOCK_S - 1) * e));
       mats.forEach(m => { m.uniforms.uP.value = 1; m.uniforms.uTime.value = time; m.uniforms.uRot.value.set(group.rotation.x, group.rotation.y); });
       sparkMat.uniforms.uTime.value = time;
 
       mx += (tx - mx) * 0.06; my += (ty - my) * 0.06;
-      group.rotation.y = mx * 0.4 + Math.sin(time * 0.6) * 0.1 + e * Math.PI * 2;   // eine Drehung im Fall
+      group.rotation.y = mx * 0.4 + Math.sin(time * 0.6) * 0.1 + e * Math.PI * 2 + k * Math.PI * 2;
       group.rotation.x = my * 0.2 + Math.sin(e * Math.PI) * 0.55;
       group.position.y = toY(startPx + (dockPx - startPx) * e);
+      group.position.z = -depth;
 
       // Der Jarvis-Ring bleibt oben, öffnet sich wie ein Loch und verblasst, wenn das Logo durchfällt
       hud.position.y = toY(startPx);
@@ -916,7 +933,12 @@
         w.scale.setScalar(2.2 + ph * 2.4); w.material.opacity = on ? (1 - ph) * 0.35 * fadeS : 0; });
 
       // ===== Landeplatz: Landung + Daten nach oben =====
-      dockG.position.y = toY(dockPx);
+      dockG.position.set(0, toY(dockPx), -depth);
+      tunnel.position.y = toY(dockPx);
+      tRings.forEach((g, i) => { g.rotation.z = time * g.userData.spin;
+        const d = Math.abs(g.position.z + depth);         // nah am Logo = heller
+        const o = (0.25 + 0.75 * Math.max(0, 1 - d / 12)) * clamp((f - 0.6) / 0.4);
+        g.children.forEach(m => m.material.opacity = m.userData.op * o); });
       pad.position.y = -LH * DOCK_S * 0.5 - 0.15;
       const docked = f >= 0.995;
       if (docked && !wasDocked && time > 1.5) landT = time;
@@ -937,9 +959,7 @@
 
       threadMat.uniforms.uTime.value = time;
       dust.rotation.y = time * 0.02;
-      const show = dr.bottom > -40 || f < 1;
-      if (show) { renderer.render(scene, camera); cleared = false; }
-      else if (!cleared) { renderer.clear(); cleared = true; }
+      renderer.render(scene, camera);
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
