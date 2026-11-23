@@ -6,9 +6,7 @@
 <title>Lativ Fade Cut – Friseur in Augsburg</title>
 <meta name="description" content="Lativ Fade Cut – Friseurmeister in Augsburg. Fade, Locken, Farbe, Damen- und Herrenhaarschnitte. Georgenstraße 3, 86152 Augsburg. Termin online buchen oder über die Termin-Börse übernehmen.">
 <link rel="icon" href="img/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts.css">
 <style>
   :root{
     --bg:#0b0b0b; --panel:#141414; --line:#262626;
@@ -467,6 +465,7 @@
 <footer>
   <div class="wrap">
     <p style="margin-bottom:10px"><b style="color:var(--text)">Impressum</b><br>Latif Sherifi · Lativ Fade Cut<br>Georgenstraße 3 · 86152 Augsburg<br>Telefon: +49 176 74746361</p>
+    <p style="margin-bottom:10px"><a href="datenschutz.html" style="color:#e8c36f">Datenschutzerklärung</a></p>
     © <span id="y"></span> Lativ Fade Cut · Augsburg
   </div>
 </footer>
@@ -637,7 +636,7 @@
   if (!API_URL){ $("tbOpen").classList.add("hidden"); $("tbClosed").classList.remove("hidden"); }
   else load();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/three.min.js"></script>
 <script>
 {
   const stage = document.getElementById("stage");
