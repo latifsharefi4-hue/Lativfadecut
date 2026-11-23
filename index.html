@@ -218,6 +218,26 @@
   .rate-top:hover{background:rgba(226,184,102,.12)}
   .nav nav{gap:12px}
   @media(max-width:420px){.rate-top{padding:7px 10px;font-size:.8rem}.nav .btn{padding:8px 11px;font-size:.8rem}}
+  /* ===== Feinschliff: Lesbarkeit, Luxus, Preis-Übersicht ===== */
+  main > section{background:rgba(9,8,7,.78)}
+  .eyebrow{color:#e8c36f;font-size:.8rem;letter-spacing:.16em}
+  section h2{line-height:1.15}
+  section h2::after{content:"";display:block;width:64px;height:1px;margin-top:16px;background:linear-gradient(90deg,#e8c36f,rgba(232,195,111,0))}
+  .vote h2::after,.book h2::after{margin-left:auto;margin-right:auto;background:linear-gradient(90deg,rgba(232,195,111,0),#e8c36f,rgba(232,195,111,0))}
+  .card h3,.tb-step b{font-family:Inter,system-ui,sans-serif!important;font-weight:600;letter-spacing:0;color:#fff;transform:none}
+  .card p,.tb-step,.offer .what,.note,.tb-intro,.book p,.vote p.vsub{color:#dcdcdc;line-height:1.7}
+  .card{padding:26px 24px;border-radius:6px}
+  .prices{border-radius:8px}
+  .row div{color:#fff}
+  .row span{color:#c9c9c9}
+  .cat{font-family:Cinzel,serif;font-size:1.3rem;letter-spacing:.06em;color:#fff;margin:48px 0 14px;display:flex;align-items:center;gap:14px;scroll-margin-top:130px}
+  .cat::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(232,195,111,.5),rgba(232,195,111,0))}
+  .chips{position:sticky;top:64px;z-index:6;display:flex;gap:8px;overflow-x:auto;padding:12px 0;margin:18px 0 0;background:rgba(9,8,7,.95);scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chips a{flex:none;padding:9px 16px;border:1px solid rgba(232,195,111,.45);border-radius:999px;color:#e8c36f;text-decoration:none;font-size:.9rem;font-weight:600;white-space:nowrap}
+  .chips a:hover{background:rgba(232,195,111,.12)}
+  .closed .float{display:none}
+  .closed footer{padding-bottom:40px}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -277,29 +297,35 @@
   <section id="preise">
     <div class="wrap">
       <div class="eyebrow">Preise &amp; Buchung</div>
-      <h2>Haarschnitte</h2>
+      <h2>Unsere Preise</h2>
+      <nav class="chips" aria-label="Preis-Kategorien">
+        <a href="#p-herren">Haarschnitte</a><a href="#p-kinder">Kinder</a><a href="#p-bart">Haare &amp; Bart</a><a href="#p-farbe">Farbe &amp; Locken</a><a href="#p-damen">Damen</a>
+      </nav>
+      <h3 class="cat" id="p-herren">Haarschnitte</h3>
       <div class="prices">
         <a class="row" href="https://cal.eu/lativfadecut/classic-haarschnitt-30"><div>Haarschnitt + Styling<span>35 Min · Sauberer Schnitt mit klaren Übergängen + Styling, mit Haar- und Kopfhautanalyse</span></div><strong>28 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut/scheren-schnitt"><div>Scheren-Schnitt<span>40 Min · Waschen, Schneiden, Styling</span></div><strong>35 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut/premium-haarschnitt-40"><div>LativCut Premium · Meister<span>50 Min · Maximale Präzision, Beratung &amp; Styling, perfektes Finish – inkl. kostenlosem Styling-Produkt</span></div><strong>40 €<em>Buchen →</em></strong></a>
       </div>
-      <h2 style="margin-top:44px">Kinder</h2>
+      <h3 class="cat" id="p-kinder">Kinder</h3>
       <div class="prices">
         <a class="row" href="https://cal.eu/lativfadecut/kinder-haarschnitt-unter-12-jahre-alt-20"><div>Kinder-Haarschnitt unter 15 Jahre<span>25 Min</span></div><strong>25 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut/kinder-haarschnitt-uber-3-mm-bis-12-jahre-alt-16"><div>Kinder-Haarschnitt über 3 mm, bis 12 Jahre<span>20 Min</span></div><strong>20 €<em>Buchen →</em></strong></a>
       </div>
-      <h2 style="margin-top:44px">Haare &amp; Bart</h2>
+      <h3 class="cat" id="p-bart">Haare &amp; Bart</h3>
       <div class="prices">
         <a class="row" href="https://cal.eu/lativfadecut/haarschnitt-bart-35"><div>Haare + Bart<span>45 Min · Konturen, Pflege &amp; sauberes Styling</span></div><strong>48 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut/augenbrauen-mit-faden-40"><div>Haare + Bart + Augenbrauen mit Faden<span>45 Min · Upgrade: Augenbrauen formen mit Faden</span></div><strong>55 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut/komplettpaket-premium-65"><div>Komplettpaket Premium · Signature<span>65 Min · Haare, Bart, Styling, Kopfmassage, Gesichtsmaske, Waschen, Details</span></div><strong>65 €<em>Buchen →</em></strong></a>
       </div>
-      <h2 style="margin-top:44px">Farbe &amp; Locken</h2>
+      <h3 class="cat" id="p-farbe">Farbe &amp; Locken</h3>
       <div class="prices">
         <a class="row" href="https://cal.eu/lativfadecut/strahnen-95"><div>Strähnen<span>120 Min · ohne Haarschnitt</span></div><strong>50 €<em>Buchen →</em></strong></a>
-        <a class="row" href="https://cal.eu/lativfadecut/dauerwelle-haarschnitt"><div>Dauerwelle + Haarschnitt<span>120 Min · inkl. Pflegetipps für schöne Locken</span></div><strong>75 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Dauerwelle + Haarschnitt · Basic<span>120 Min · mit PURE</span></div><strong>85 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Dauerwelle + Haarschnitt · Premium<span>120 Min · mit Wella Perform Pro+</span></div><strong>110 €<em>Buchen →</em></strong></a>
+        <a class="row" href="https://cal.eu/lativfadecut"><div>Dauerwelle + Haarschnitt · Sculptura<span>120 Min · mit Sculptura Strongwave</span></div><strong>125 €<em>Buchen →</em></strong></a>
       </div>
-      <h2 style="margin-top:44px">Damen</h2>
+      <h3 class="cat" id="p-damen">Damen</h3>
       <div class="prices">
         <a class="row" href="https://cal.eu/lativfadecut"><div>Damen-Haarschnitt<span>30 Min · Schnitt nach Wunsch + Styling</span></div><strong>25 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut"><div>Waschen, Schneiden, Föhnen<span>45 Min · Haarwäsche, Schnitt und Föhnfrisur</span></div><strong>35 €<em>Buchen →</em></strong></a>
@@ -307,7 +333,6 @@
         <a class="row" href="https://cal.eu/lativfadecut"><div>Föhnen / Styling<span>30 Min · Föhnfrisur oder Styling ohne Schnitt</span></div><strong>20 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut"><div>Ansatz färben<span>60 Min · Nachfärben des Ansatzes</span></div><strong>40 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut"><div>Komplett färben<span>90 Min · Farbe für das ganze Haar</span></div><strong>60 €<em>Buchen →</em></strong></a>
-        <a class="row" href="https://cal.eu/lativfadecut/strahnen-95"><div>Strähnen<span>120 Min · ohne Haarschnitt</span></div><strong>50 €<em>Buchen →</em></strong></a>
         <a class="row" href="https://cal.eu/lativfadecut"><div>Augenbrauen mit Faden<span>15 Min · Augenbrauen formen mit Faden</span></div><strong>10 €<em>Buchen →</em></strong></a>
       </div>
       <p class="note">Tipp auf eine Leistung, um direkt einen Termin zu buchen. Bezahlung bar oder mit Karte. Alle Preise inkl. MwSt. Absagen bitte bis 24 Stunden vorher.</p>
@@ -372,7 +397,7 @@
       </div>
 
       <div class="admin">
-        <button class="btn btn-ghost btn-sm" id="btnAdmin">🔒 Bereich für Lativ</button>
+        <button class="btn btn-ghost btn-sm" id="btnAdmin">Bereich für Lativ</button>
         <div class="panel hidden" id="adminLogin">
           <label class="field">PIN eingeben<input id="pin" type="password" inputmode="numeric" autocomplete="off"></label>
           <div class="err" id="pinErr"></div>
@@ -598,7 +623,7 @@
     api("GET", { action:"admin", pin:$("pin").value }).then(function(res){
       if (!res.ok){ $("pinErr").textContent = "Falscher PIN."; return; }
       $("adminLogin").classList.add("hidden"); $("adminView").classList.remove("hidden");
-      $("btnAdmin").textContent = "🔓 Bereich für Lativ";
+      $("btnAdmin").textContent = "Bereich für Lativ (offen)";
       $("log").innerHTML = res.rows.length ? res.rows.map(function(r){
         var head = r.status === "vergeben"
           ? '<b>'+esc(r.vorname)+'</b> → <b>'+esc(r.uebernommen_von)+'</b>'
