@@ -172,6 +172,28 @@
   .hint{animation:none}
   .btn.soon::before{animation:none}
   .card,.prices,.info,.tb-step,.offer,.panel{background:rgba(16,14,12,.88)}
+
+  /* ===== Baustelle: kleine Agenten hämmern an der Buchung ===== */
+  .btn.soon{position:relative;overflow:visible}
+  .closed .prices{position:relative;overflow:visible}
+  .bot{position:absolute;bottom:calc(100% - 4px);width:52px;height:60px;pointer-events:none;z-index:3}
+  .bot.l{left:14px}.bot.r{right:14px}
+  .bot.r svg{transform:scaleX(-1)}
+  .bot svg{width:100%;height:100%;overflow:visible}
+  .bot .arm{transform-box:view-box;transform-origin:29px 31px;animation:hammer 1s cubic-bezier(.55,0,.5,1) infinite}
+  .bot .bod{transform-box:view-box;transform-origin:22px 48px;animation:squash 1s ease-in-out infinite}
+  .bot .spark{opacity:0;transform-box:view-box;transform-origin:41px 47px;animation:spark 1s ease-out infinite}
+  .bot.r .arm,.bot.r .bod,.bot.r .spark{animation-delay:-.5s}
+  .prices .bot.r{right:20px}
+  @keyframes hammer{0%{transform:rotate(-50deg)}55%{transform:rotate(-62deg)}72%{transform:rotate(72deg)}80%{transform:rotate(64deg)}100%{transform:rotate(-50deg)}}
+  @keyframes squash{0%,60%,100%{transform:scale(1,1)}74%{transform:scale(1.06,.93)}86%{transform:scale(.98,1.02)}}
+  @keyframes spark{0%,70%{opacity:0;transform:scale(.4)}74%{opacity:.9;transform:scale(1)}88%{opacity:0;transform:scale(1.3)}100%{opacity:0}}
+  .tape{display:inline-block;padding:5px;margin-bottom:18px;border-radius:4px;background:repeating-linear-gradient(-45deg,#e2b866 0 12px,#141210 12px 24px)}
+  .tape span{display:block;background:#0b0b0b;color:#e8c36f;padding:7px 16px;font-weight:700;letter-spacing:.12em;font-size:.84rem;border-radius:2px}
+  .book .tape{margin-bottom:14px}
+  .closed .hero .cta{margin-top:52px}
+  .closed #buchen .btn.soon{margin-top:46px}
+  .closed #preise .prices{margin-top:62px}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -407,7 +429,28 @@
       var em = r.querySelector("strong em"); if (em) em.textContent = "Bald online";
     });
     var copy = document.querySelector(".hero .copy");
-    if (copy) copy.insertAdjacentHTML("afterbegin", '<div class="closed-pill">ZURZEIT GESCHLOSSEN</div>');
+    if (copy) copy.insertAdjacentHTML("afterbegin", '<div class="tape"><span>BAUSTELLE · WIR BAUEN GERADE</span></div>');
+    // Kleine Bau-Agenten mit Helm und Hammer
+    var BOT = '<svg viewBox="0 0 48 56" aria-hidden="true">' +
+      '<g class="bod">' +
+        '<rect x="12" y="44" width="6" height="10" rx="2" fill="#2b2620"/><rect x="25" y="44" width="6" height="10" rx="2" fill="#2b2620"/>' +
+        '<rect x="9" y="27" width="26" height="19" rx="6" fill="#1c1914" stroke="#e2b866" stroke-width="1.6"/>' +
+        '<rect x="15" y="32" width="14" height="6" rx="3" fill="#3a3326"/><circle cx="18" cy="35" r="1.4" fill="#e2b866"/><circle cx="22" cy="35" r="1.4" fill="#e2b866"/><circle cx="26" cy="35" r="1.4" fill="#e2b866"/>' +
+        '<rect x="10" y="10" width="24" height="17" rx="7" fill="#1c1914" stroke="#e2b866" stroke-width="1.6"/>' +
+        '<rect x="14" y="15" width="16" height="7" rx="3.5" fill="#e8c36f"/><circle cx="19" cy="18.5" r="1.6" fill="#1c1914"/><circle cx="26" cy="18.5" r="1.6" fill="#1c1914"/>' +
+        '<path d="M8 12 Q22 -2 36 12 Z" fill="#f2c94c" stroke="#b8862e" stroke-width="1.2"/><rect x="6" y="11" width="32" height="3.2" rx="1.6" fill="#e0b23a"/><rect x="20" y="3.5" width="4" height="7" rx="2" fill="#e0b23a"/>' +
+        '<rect x="3" y="30" width="7" height="4" rx="2" fill="#e2b866"/>' +
+      '</g>' +
+      '<g class="arm"><rect x="29" y="29.5" width="11" height="3.5" rx="1.75" fill="#e2b866"/><rect x="38" y="29.8" width="12" height="3" rx="1.5" fill="#8a6a3a"/><rect x="47" y="25" width="6.5" height="12" rx="1.6" fill="#b9b9b9" stroke="#6d6d6d" stroke-width="1"/></g>' +
+      '<g class="spark" stroke="#f6d98b" stroke-width="1.8" stroke-linecap="round"><path d="M41 47 l-5 -4"/><path d="M41 47 l0 -7"/><path d="M41 47 l6 -4"/><path d="M41 47 l7 1"/></g>' +
+      '</svg>';
+    function addBots(el, both){ if (!el) return;
+      el.insertAdjacentHTML("beforeend", (both ? '<span class="bot l">' + BOT + '</span>' : '') + '<span class="bot r">' + BOT + '</span>'); }
+    addBots(document.querySelector(".hero .btn.soon"), true);
+    addBots(document.querySelector("#buchen .btn.soon"), true);
+    document.querySelectorAll("#preise .prices").forEach(function(p){ addBots(p, false); });
+    var bk2 = document.querySelector("#buchen .wrap"); if (bk2) bk2.insertAdjacentHTML("afterbegin", '<div class="tape"><span>BAUSTELLE · BALD OFFEN</span></div>');
+
     var note = document.querySelector("#preise .note");
     if (note) note.textContent = "Die Online-Buchung startet bald – schau bald wieder vorbei. Bezahlung bar oder mit Karte. Alle Preise inkl. MwSt.";
     var bk = document.getElementById("buchen");
