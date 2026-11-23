@@ -236,6 +236,7 @@
   .chips a:hover{background:rgba(232,195,111,.12)}
   .closed .float{display:none}
   .closed footer{padding-bottom:40px}
+  a.loading{opacity:.6;pointer-events:none}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -474,7 +475,7 @@
 
 <script>
   // ===== SCHALTER: auf true stellen, sobald Kunden online buchen können =====
-  var BUCHUNG_OFFEN = false;
+  var BUCHUNG_OFFEN = true;
   var CAL_LINK = "https://cal.eu/lativfadecut";
   if (BUCHUNG_OFFEN) {
     document.querySelectorAll(".js-book").forEach(function(a){ a.href = CAL_LINK; });
@@ -1158,6 +1159,36 @@
   });
   // Ergebnisse laden, sobald man den Bereich erreicht
   new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); load(); } }).observe(scale);
+}
+</script>
+
+<script>
+{
+  // ===== Buchung direkt auf der Seite (Cal.com-Fenster statt neuem Link) =====
+  // Das Cal.com-Skript wird erst beim ersten Tipp auf "Buchen" geladen.
+  const ORIGIN = "https://app.cal.eu";
+  let ready = null;
+  function loadCal(){
+    if (ready) return ready;
+    ready = new Promise((res, rej) => {
+      (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; const s = d.createElement("script"); s.src = A; s.onload = res; s.onerror = rej; d.head.appendChild(s); cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, ORIGIN + "/embed/embed.js", "init");
+      Cal("init", { origin: ORIGIN });
+      Cal("ui", { theme: "dark", styles: { branding: { brandColor: "#e8c36f" } }, hideEventTypeDetails: false, layout: "month_view" });
+      setTimeout(() => rej(new Error("timeout")), 8000);
+    });
+    return ready;
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="https://cal.eu/lativfadecut"]');
+    if (!a) return;
+    e.preventDefault();
+    const calLink = a.href.replace(/^https:\/\/cal\.eu\//, "").replace(/\/$/, "");
+    a.classList.add("loading");
+    loadCal().then(() => {
+      Cal("modal", { calLink, config: { layout: "month_view", theme: "dark" } });
+    }).catch(() => { location.href = a.href; })   // falls etwas schiefgeht: normale Buchungsseite
+      .finally(() => a.classList.remove("loading"));
+  });
 }
 </script>
 </body>
