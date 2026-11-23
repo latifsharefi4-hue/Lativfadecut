@@ -952,7 +952,7 @@
       R.outer.rotation.z = time * 0.05;  R.dash.rotation.z = -time * 0.12;
       R.tick.rotation.z = time * 0.18;   R.arcs.rotation.z = -time * 0.45 + Math.sin(time * 0.9) * 0.3;
       R.thin.rotation.z = time * 0.3;    R.inner.rotation.z = time * 0.8;
-      Object.values(R).forEach((g, k) => g.children.forEach(m => m.material.opacity = m.userData.op * clamp(hudIn * 1.4 - k * 0.08) * fadeS));
+      Object.values(R).forEach(g => g.visible = false);   // HUD-Ringe ausgeblendet
       sphere.rotation.y = time * 0.15; sphere.rotation.x = Math.sin(time * 0.2) * 0.3;
       sNodes.material.opacity = sNodes.userData.op * hudIn * 0.8 * fadeS;
       sLines.material.opacity = sLines.userData.op * hudIn * fadeS;
@@ -973,11 +973,11 @@
       // Schockwelle beim Einschlag + Puls-Wellen alle 3 s
       if (hit > 0 && hit < 1.2) { shock.visible = true; shock.scale.setScalar(1.6 + hit * 4); shock.material.opacity = (1 - hit / 1.2) * 0.8; } else shock.visible = false;
       waves.forEach((w, i) => { const ph = ((time - 2 + i) % 3) / 3; const on = time > 2 + i;
-        w.scale.setScalar(2.2 + ph * 2.4); w.material.opacity = on ? (1 - ph) * 0.35 * fadeS : 0; });
+        w.scale.setScalar(2.2 + ph * 2.4); w.material.opacity = 0; });   // Puls-Ringe aus
 
       // ===== Landeplatz: Landung + Daten nach oben =====
       dockG.position.y = toY(dockPx);
-      pad.position.y = -LH * DOCK_S * 0.5 - 0.15;
+      pad.position.y = -LH * DOCK_S * 0.42;
       const docked = f >= 0.995;
       if (docked && !wasDocked && time > 1.5) landT = time;
       wasDocked = docked;
@@ -1056,13 +1056,13 @@
       const tk = new THREE.LineSegments(tg, new THREE.LineBasicMaterial(Object.assign({ color:GOLD, opacity:.18 }, ADD)));
       g.add(m1, tk, ...arcs); g.position.set((i % 2 ? 1 : -1) * 0.6, (i % 3 - 1) * 0.5, z);
       g.userData = { spin:(i % 2 ? 1 : -1) * (0.05 + i * 0.01), z };
-      scene.add(g); gates.push(g);
+      gates.push(g); // Ring-Tunnel ausgeblendet – nur Sternenhimmel
     }
     // Teilchen im ganzen Tunnel (Tiefe beim Scrollen)
-    const N = 1400, dp = new Float32Array(N * 3);
-    for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, rr = 1.5 + Math.random() * 9; dp.set([Math.cos(a) * rr, Math.sin(a) * rr, 8 - Math.random() * (DEPTH + 20)], i * 3); }
+    const N = 2600, dp = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) { const a = Math.random() * 6.283, rr = 1 + Math.random() * 14; dp.set([Math.cos(a) * rr, Math.sin(a) * rr, 8 - Math.random() * (DEPTH + 20)], i * 3); }
     const dg = new THREE.BufferGeometry(); dg.setAttribute("position", new THREE.BufferAttribute(dp, 3));
-    const dust = new THREE.Points(dg, new THREE.PointsMaterial(Object.assign({ color:0xf0cc84, size:0.05, opacity:.7 }, ADD)));
+    const dust = new THREE.Points(dg, new THREE.PointsMaterial(Object.assign({ color:0xf3dca6, size:0.045, opacity:.75 }, ADD)));
     scene.add(dust);
     // Gold-Wasserfall hängt an der Kamera – immer sichtbar, auf jeder Höhe der Seite
     const TN = 150, SEG = 60, tp = [], ts = [], ti = [];
