@@ -213,6 +213,11 @@
   .result b{color:#e8c36f;font-size:1.5rem}
   .bars{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;max-width:640px;margin:14px auto 0;height:70px;align-items:end}
   .bars i{display:block;background:linear-gradient(#e8c36f,#a87a2a);border-radius:3px 3px 0 0;min-height:2px}
+  /* Kleiner Bewerten-Knopf oben (nur solange die Buchung zu ist) */
+  .rate-top{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid rgba(226,184,102,.55);color:#e8c36f;text-decoration:none;font-size:.85rem;font-weight:600;white-space:nowrap;background:rgba(11,11,11,.6)}
+  .rate-top:hover{background:rgba(226,184,102,.12)}
+  .nav nav{gap:12px}
+  @media(max-width:420px){.rate-top{padding:7px 10px;font-size:.8rem}.nav .btn{padding:8px 11px;font-size:.8rem}}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -482,6 +487,10 @@
     addBots(document.querySelector("#buchen .btn.soon"), true);
     document.querySelectorAll("#preise .prices").forEach(function(p){ addBots(p, false); });
     var bk2 = document.querySelector("#buchen .wrap"); if (bk2) bk2.insertAdjacentHTML("afterbegin", '<div class="tape"><span>BAUSTELLE · BALD OFFEN</span></div>');
+
+    // Kleiner Knopf oben neben "Bald verfügbar": springt zur Bewertung
+    var navEl = document.querySelector("header nav"), soonBtn = navEl && navEl.querySelector(".btn.soon");
+    if (navEl && soonBtn) soonBtn.insertAdjacentHTML("beforebegin", '<a class="rate-top" href="#bewerten">&#9733; Bewerten</a>');
 
     var note = document.querySelector("#preise .note");
     if (note) note.textContent = "Die Online-Buchung startet bald – schau bald wieder vorbei. Bezahlung bar oder mit Karte. Alle Preise inkl. MwSt.";
