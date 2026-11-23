@@ -953,6 +953,7 @@
       R.tick.rotation.z = time * 0.18;   R.arcs.rotation.z = -time * 0.45 + Math.sin(time * 0.9) * 0.3;
       R.thin.rotation.z = time * 0.3;    R.inner.rotation.z = time * 0.8;
       Object.values(R).forEach(g => g.visible = false);   // HUD-Ringe ausgeblendet
+      sphere.visible = false;   // Neuronen-Kugel ausgeblendet
       sphere.rotation.y = time * 0.15; sphere.rotation.x = Math.sin(time * 0.2) * 0.3;
       sNodes.material.opacity = sNodes.userData.op * hudIn * 0.8 * fadeS;
       sLines.material.opacity = sLines.userData.op * hudIn * fadeS;
