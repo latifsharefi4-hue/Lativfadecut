@@ -198,6 +198,21 @@
   #logo3d.fly{position:fixed;inset:auto;left:0;top:0;width:100%;z-index:-1;pointer-events:none}
   .dock{height:300px;position:relative}
   @media(max-width:720px){.dock{height:250px}}
+  /* ===== Abstimmung 1–10 ===== */
+  .vote{text-align:center}
+  .vote p.vsub{font-size:1rem;letter-spacing:0;font-weight:400;color:#d6d6d6;max-width:520px;margin:6px auto 22px}
+  .scale{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;max-width:640px;margin:0 auto}
+  @media(max-width:600px){.scale{grid-template-columns:repeat(5,minmax(0,1fr))}}
+  .scale button{height:52px;border-radius:6px;border:1px solid rgba(226,184,102,.45);background:rgba(18,16,13,.9);color:#e8c36f;font:700 1.25rem Inter,sans-serif;cursor:pointer;transition:background .15s,transform .15s}
+  .scale button:hover{background:rgba(226,184,102,.12)}
+  .scale button:focus-visible{outline:2px solid #e8c36f;outline-offset:2px}
+  .scale button.mine{background:#e8c36f;color:#0b0b0b}
+  .scale.done button{cursor:default}
+  .ends{display:flex;justify-content:space-between;max-width:640px;margin:8px auto 0;color:#bdbdbd;font-size:.88rem}
+  .result{margin:22px auto 0;max-width:640px;min-height:1.6em;font-size:1.05rem;color:#ececec}
+  .result b{color:#e8c36f;font-size:1.5rem}
+  .bars{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px;max-width:640px;margin:14px auto 0;height:70px;align-items:end}
+  .bars i{display:block;background:linear-gradient(#e8c36f,#a87a2a);border-radius:3px 3px 0 0;min-height:2px}
   footer{border-top:1px solid var(--line);padding:30px 0 110px;color:var(--muted);font-size:.85rem;text-align:center}
 
   .float{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none}
@@ -372,6 +387,18 @@
       <h2>Termin sichern</h2>
       <p>Wir arbeiten nur mit Termin. Such dir online einen freien Termin aus – dauert keine Minute.</p>
       <a class="btn btn-gold js-book" href="https://cal.eu/lativfadecut">Jetzt Termin buchen</a>
+    </div>
+  </section>
+
+  <section class="vote" id="bewerten">
+    <div class="wrap">
+      <div class="eyebrow">Deine Meinung</div>
+      <h2>Wie findest du die Webseite?</h2>
+      <p class="vsub">Bewerte sie von 1 bis 10 – anonym und mit einem Tipp.</p>
+      <div class="scale" id="scale" role="group" aria-label="Bewertung von 1 bis 10"></div>
+      <div class="ends"><span>1 = gar nicht</span><span>10 = mega</span></div>
+      <div class="bars hidden" id="bars" aria-hidden="true"></div>
+      <div class="result" id="result" aria-live="polite"></div>
     </div>
   </section>
 
@@ -1065,6 +1092,39 @@
 }
 </script>
 
+
+<script>
+{
+  // ===== Abstimmung: Wie findest du die Webseite? (1–10) =====
+  const API = "https://countapi.mileshilliard.com/api/v1/";
+  const KEY = n => "lativfadecut-webseite-bewertung-" + n;
+  const scale = document.getElementById("scale"), result = document.getElementById("result"), bars = document.getElementById("bars");
+  let mine = null; try { mine = localStorage.getItem("lfc-bewertung"); } catch(e) {}
+  for (let n = 1; n <= 10; n++) scale.insertAdjacentHTML("beforeend", '<button type="button" data-n="' + n + '" aria-label="' + n + ' von 10">' + n + '</button>');
+  const get = n => fetch(API + "get/" + KEY(n)).then(r => r.ok ? r.json() : { value:0 }).then(d => +d.value || 0).catch(() => 0);
+  function show(counts){
+    const total = counts.reduce((a, b) => a + b, 0);
+    if (!total) { result.textContent = mine ? "Danke für deine Bewertung!" : "Sei der Erste, der bewertet."; return; }
+    const avg = counts.reduce((a, c, i) => a + c * (i + 1), 0) / total;
+    result.innerHTML = (mine ? "Danke! Du hast " + mine + " gegeben.<br>" : "") +
+      "Durchschnitt: <b>" + avg.toFixed(1).replace(".", ",") + "</b> von 10 · " + total + (total === 1 ? " Stimme" : " Stimmen");
+    const mx = Math.max(...counts);
+    bars.innerHTML = counts.map(c => '<i style="height:' + Math.max(3, c / mx * 100) + '%"></i>').join("");
+    bars.classList.remove("hidden");
+  }
+  function load(){ return Promise.all([1,2,3,4,5,6,7,8,9,10].map(get)).then(show); }
+  function lock(){ scale.classList.add("done"); scale.querySelectorAll("button").forEach(b => { b.disabled = true; if (b.dataset.n === mine) b.classList.add("mine"); }); }
+  if (mine) lock();
+  scale.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b || mine) return;
+    mine = b.dataset.n; try { localStorage.setItem("lfc-bewertung", mine); } catch(err) {}
+    lock(); result.textContent = "Wird gespeichert …";
+    fetch(API + "hit/" + KEY(mine)).catch(() => {}).then(load);
+  });
+  // Ergebnisse laden, sobald man den Bereich erreicht
+  new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { o.disconnect(); load(); } }).observe(scale);
+}
+</script>
 </body>
 </html>
 
