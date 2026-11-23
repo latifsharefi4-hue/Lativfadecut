@@ -626,7 +626,7 @@
     try { renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true }); } catch(e){ return flat(); }
     canvas.classList.add("fly"); document.querySelector("main").prepend(canvas);
     const dockEl = document.getElementById("dock");
-    renderer.setPixelRatio(matchMedia("(pointer:coarse)").matches ? Math.min(devicePixelRatio, 1.3) : Math.min(devicePixelRatio, 1.6));
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));          // volle Retina-Schärfe
     stage.classList.add("gl");
 
     const scene = new THREE.Scene();
@@ -650,10 +650,11 @@
     }
 
     // Logo als 1024x1024-Bild (Zweierpotenz) – funktioniert in jedem Browser, auch in Instagram/TikTok
-    const pot = document.createElement("canvas"); pot.width = pot.height = 1024;
-    pot.getContext("2d").drawImage(img, 0, 0, 1024, 1024);
+    const pot = document.createElement("canvas"); pot.width = pot.height = 2048;
+    const pc = pot.getContext("2d"); pc.imageSmoothingEnabled = true; pc.imageSmoothingQuality = "high";
+    pc.drawImage(img, 0, 0, 2048, 2048);
     const tex = new THREE.CanvasTexture(pot);
-    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+    tex.minFilter = THREE.LinearMipmapLinearFilter; tex.anisotropy = renderer.capabilities.getMaxAnisotropy(); tex.generateMipmaps = true;
 
     function makeMesh(layerFrom, layerTo, front){
       const base = new THREE.PlaneGeometry(TW, TH);
@@ -1017,7 +1018,7 @@
   try { if (!window.THREE) throw 0; R3 = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true }); } catch(e){ cv.style.display = "none"; }
   if (R3) {
     const TOUCH = matchMedia("(pointer:coarse)").matches;
-    R3.setPixelRatio(TOUCH ? 0.9 : Math.min(devicePixelRatio, 1.1));
+    R3.setPixelRatio(Math.min(devicePixelRatio, 2));
     const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(55, 1, 0.1, 120); scene.add(cam);
     const ADD = { transparent:true, depthWrite:false, blending:THREE.AdditiveBlending };
     const GOLD = 0xe2b866;
